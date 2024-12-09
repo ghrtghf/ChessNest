@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
 {
+    protected $model;
+
    public $sortBy = 'created_at';
    public $sortOrder = 'asc';
    public function all()
