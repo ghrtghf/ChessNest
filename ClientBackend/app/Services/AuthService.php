@@ -20,8 +20,32 @@ class AuthService extends BaseService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => $user,
-            'access_token' => $token,
+            'data' => [
+                'user' => $user,
+                'access_token' => $token,
+            ],
+        ];
+    }
+
+    public function login($credentials)
+    {
+        $user = $this->repo->find($credentials['email']);
+
+        if (! $user || ! password_verify($credentials['password'], $user->password)) {
+            return [
+                'status' => 'error',
+                'message' => 'Неверные учетные данные',
+            ];
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return [
+            'status' => 'success',
+            'data' => [
+                'user' => $user,
+                'access_token' => $token,
+            ],
         ];
     }
 }

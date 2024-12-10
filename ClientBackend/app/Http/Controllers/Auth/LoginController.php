@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use App\Services\AuthService;
 use App\Traits\ApiResponse;
 
-class RegisterController extends Controller
+class LoginController extends Controller
 {
     use ApiResponse;
 
@@ -18,9 +18,13 @@ class RegisterController extends Controller
         $this->service = $authService;
     }
 
-    public function store(RegisterRequest $request)
+    public function store(LoginRequest $request)
     {
-        $response = $this->service->register($request->validated());
+        $response = $this->service->login($request->validated());
+
+        if ($response['status'] === 'error') {
+            return $this->error($response['message'], 401);
+        }
 
         return $this->success($response['data'], 201);
     }
