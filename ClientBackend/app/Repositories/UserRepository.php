@@ -13,7 +13,7 @@ class UserRepository extends BaseRepository
         $this->model = $user;
     }
 
-    public function find($email)
+    public function findOnEmail($email)
     {
         return $this->model->where('email', $email)->first();
     }

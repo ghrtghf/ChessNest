@@ -29,7 +29,7 @@ class AuthService extends BaseService
 
     public function login($credentials)
     {
-        $user = $this->repo->find($credentials['email']);
+        $user = $this->repo->findOnEmail($credentials['email']);
 
         if (! $user || ! password_verify($credentials['password'], $user->password)) {
             return [
