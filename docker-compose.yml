@@ -18,10 +18,10 @@ services:
     container_name: clientbackend
     environment:
       DB_HOST: database
-      DB_PORT: 3306
+      DB_PORT: 5432
       DB_DATABASE: chess_nest
-      DB_USERNAME: root
-      DB_PASSWORD: password
+      DB_USERNAME: lara
+      DB_PASSWORD: lara
       CACHE_DRIVER: redis
       REDIS_HOST: redis
       REDIS_PASSWORD: password
@@ -49,34 +49,31 @@ services:
   #     - app-network
 
   database:
-    image: mysql:8.0
-    container_name: database
+    image: postgres:14
+    container_name: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: chess_nest
-      MYSQL_USER: lara
-      MYSQL_PASSWORD: lara 
+      POSTGRES_USER: lara
+      POSTGRES_PASSWORD: lara
+      POSTGRES_DB: chess_nest
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - pg_data:/var/lib/postgresql/data
     networks:
       - app-network
-  
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
-      PMA_HOST: database
-      PMA_PORT: 3306
-      PMA_USER: lara
-      PMA_PASSWORD: lara
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "8080:80"
+      - "5050:80"
+    networks:
+      - app-network
     depends_on:
       - database
-    networks:
-      - app-network
 
   proxy:
     image: nginx:1.23
@@ -98,7 +95,7 @@ services:
       - app-network
 
 volumes:
-  db_data:
+  pg_data:
 
 networks:
   app-network:
