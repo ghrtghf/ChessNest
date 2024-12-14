@@ -22,12 +22,17 @@ services:
       DB_DATABASE: chess_nest
       DB_USERNAME: root
       DB_PASSWORD: password
+      CACHE_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: password
+      REDIS_PORT: 6379
     volumes:
       - ./ClientBackend:/var/www
     ports:
       - "8000:8000"
     depends_on:
       - database
+      - redis
     networks:
       - app-network
 
@@ -80,6 +85,15 @@ services:
       - ./nginx:/etc/nginx/conf.d
     ports:
       - "80:80"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass", "password"]
     networks:
       - app-network
 
