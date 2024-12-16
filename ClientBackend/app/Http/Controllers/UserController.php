@@ -24,23 +24,23 @@ class UserController extends Controller
         return $this->success(['users' => $response], 201);
     }
 
-    public function show($id)
+    public function show($nickname)
     {
-        $response = $this->service->find($id);
+        $response = $this->service->find($nickname);
 
         return $this->success(['users' => $response], 201);
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, $nickname)
     {
-        $response = $this->service->update($id, $request->validated());
+        $response = $this->service->update($nickname, $request->validated());
 
         return $this->success(['users' => $response], 201);
     }
 
-    public function destroy($id)
+    public function destroy($nickname)
     {
-        $response = $this->service->destroy($id);
+        $response = $this->service->destroy($nickname);
 
         return $this->success(['users' => $response], 204);
     }

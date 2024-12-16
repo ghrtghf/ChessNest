@@ -35,6 +35,8 @@ services:
       - redis
     networks:
       - app-network
+    expose:
+      - "9000"
 
   # GameBackend:
   #   build:
@@ -80,8 +82,11 @@ services:
     container_name: nginx
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./ClientBackend:/var/www/clientbackend
     ports:
       - "80:80"
+    depends_on:
+      - ClientBackend
     networks:
       - app-network
 
@@ -90,12 +95,13 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    command: ["redis-server", "--requirepass", "password"]
+    command: [ "redis-server", "--requirepass", "password" ]
     networks:
       - app-network
 
 volumes:
   pg_data:
+
 
 networks:
   app-network:
