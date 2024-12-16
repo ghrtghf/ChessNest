@@ -23,7 +23,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:255', new ValidUsername],
+            'nickname' => ['required', 'string', 'min:2', 'max:255', new ValidUsername],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:3',
         ];
@@ -32,10 +32,10 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле "Имя" обязательно для заполнения.',
-            'name.string' => 'Поле "Имя" должно быть строкой.',
-            'name.min' => 'Поле "Имя" должно содержать не менее :min символов.',
-            'name.max' => 'Поле "Имя" должно содержать не более :max символов.',
+            'nickname.required' => 'Поле "Имя" обязательно для заполнения.',
+            'nickname.string' => 'Поле "Имя" должно быть строкой.',
+            'nickname.min' => 'Поле "Имя" должно содержать не менее :min символов.',
+            'nickname.max' => 'Поле "Имя" должно содержать не более :max символов.',
 
             'email.required' => 'Поле "E-mail" обязательно для заполнения.',
             'email.string' => 'Поле "E-mail" должно быть строкой.',

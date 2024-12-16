@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Models\Game;
-use BeyondCode\LaravelWebSockets\WebSockets\Channels\Channel;
+use BeyondCode\LaravelWebSockets\WebSockets\Channels\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -30,7 +30,7 @@ class MatchFound
     public function broadcastOn(): array
     {
         return [
-            new Channel('matchmaking'),
+            new PrivateChannel('game.'.$this->game->id),
         ];
     }
 }

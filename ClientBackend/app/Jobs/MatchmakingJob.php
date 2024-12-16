@@ -28,11 +28,10 @@ class MatchmakingJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $requests = Matchmaking::where('status', 'waiting')->orderBy('created_at', 'asc')->get();
+        $requests = Matchmaking::orderBy('created_at', 'asc')->get();
 
         foreach ($requests as $request) {
-            $opponent = Matchmaking::where('status', 'waiting')
-                ->where('user_id', '!=', $request->user_id)
+            $opponent = Matchmaking::where('user_id', '!=', $request->user_id)
                 ->whereBetween('rating', [$request->rating - 100, $request->rating + 100])
                 ->orderBy('created_at', 'asc')
                 ->first();
@@ -45,6 +44,9 @@ class MatchmakingJob implements ShouldQueue
                 ]);
 
                 broadcast(new MatchFound($game));
+
+                $request->delete();
+                $opponent->delete();
             }
         }
     }

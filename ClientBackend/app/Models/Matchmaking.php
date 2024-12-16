@@ -9,5 +9,5 @@ class Matchmaking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'reating'];
+    protected $fillable = ['user_id', 'rating'];
 }
