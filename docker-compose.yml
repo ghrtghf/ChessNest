@@ -99,6 +99,21 @@ services:
     networks:
       - app-network
 
+  websocket:
+    build:
+      context: ./ClientBackend
+    container_name: websocket
+    ports:
+      - "6001:6001"
+    environment:
+      - PUSHER_APP_ID=
+      - PUSHER_APP_KEY=
+      - PUSHER_APP_SECRET=
+      - PUSHER_APP_CLUSTER=mt1
+    depends_on:
+      - redis
+    networks:
+      - app-network
 volumes:
   pg_data:
 
