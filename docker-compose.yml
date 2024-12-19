@@ -102,14 +102,15 @@ services:
   websocket:
     build:
       context: ./ClientBackend
+      dockerfile: Dockerfile.websocket
     container_name: websocket
     ports:
       - "6001:6001"
     environment:
-      - PUSHER_APP_ID=${PUSHER_APP_ID}
-      - PUSHER_APP_KEY=${PUSHER_APP_KEY}
-      - PUSHER_APP_SECRET=${PUSHER_APP_SECRET}
-      - PUSHER_APP_CLUSTER=${PUSHER_APP_CLUSTER}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: password
+    env_file:
+      - ./ClientBackend/.env
     depends_on:
       - redis
     networks:

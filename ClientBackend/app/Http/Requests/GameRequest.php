@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ValidUsername;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class GameRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,8 +22,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'min:2', 'max:255', new ValidUsername],
-            'email' => 'string|email|max:255|unique:users',
+            //
         ];
     }
 }

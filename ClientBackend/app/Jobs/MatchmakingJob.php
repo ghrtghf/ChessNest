@@ -28,8 +28,8 @@ class MatchmakingJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $requests = Matchmaking::orderBy('created_at', 'asc')->get();
 
+        $requests = Matchmaking::orderBy('created_at', 'asc')->get();
         foreach ($requests as $request) {
             $opponent = Matchmaking::where('user_id', '!=', $request->user_id)
                 ->whereBetween('rating', [$request->rating - 100, $request->rating + 100])

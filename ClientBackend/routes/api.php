@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\MatchmakingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -31,10 +32,13 @@ Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::get('/users/{nickname}', [UserController::class, 'show']);
     Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::put('/users/{nickname}', [UserController::class, 'update']);
+    Route::delete('/users/{nickname}', [UserController::class, 'destroy']);
 
     Route::post('/matchmakings', [MatchmakingController::class, 'store']);
+
+    Route::get('/games/{id}', [GameController::class, 'show']);
+    Route::post('/games', [GameController::class, 'store']);
 });
