@@ -1,7 +1,6 @@
-.wp {
-	background: var(--light-tile);
+.tile--light {
+	background-color: var(--light-tile);
 }
-
-.bp {
-	background: var(--dark-tile);
+.tile--dark {
+	background-color: var(--dark-tile);
 }

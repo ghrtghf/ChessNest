@@ -3,10 +3,14 @@ import type { Metadata } from 'next'
 import { Board } from './_components'
 
 export const metadata: Metadata = {
-	title: 'Шахматы',
+	title: 'Играть против друга | Pawn.com',
 	description: 'Chess'
 }
 
 export default function Chess() {
-	return <Board />
+	return (
+		<div className='flex h-screen w-screen justify-center items-center'>
+			<Board />
+		</div>
+	)
 }
