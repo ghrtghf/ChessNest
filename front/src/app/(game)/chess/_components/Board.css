@@ -1,0 +1,11 @@
+.board {
+
+}
+
+.wp {
+	background: var(--light-tile);
+}
+
+.bp {
+	background: var(--dark-tile);
+}
