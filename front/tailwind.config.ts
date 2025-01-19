@@ -10,7 +10,9 @@ export default {
 		extend: {
 			colors: {
 				background: 'var(--background)',
-				foreground: 'var(--foreground)'
+				foreground: 'var(--foreground)',
+				light: 'var(--light-tile)',
+				dark: 'var(--dark-tile)'
 			},
 			gridTemplateColumns: {
 				'8-tiles': 'repeat(8, var(--tile-size))'
