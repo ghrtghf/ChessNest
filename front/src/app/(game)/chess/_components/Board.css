@@ -1,0 +1,36 @@
+.tile--light {
+	background-color: var(--light-tile);
+	position: relative;
+}
+.tile--dark {
+	background-color: var(--dark-tile);
+	position: relative;
+}
+
+.hint::after {
+	background-color: rgba(0, 0, 0, 0.14);
+	content: '';
+	border-radius: 50%;
+	pointer-events: none;
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	height: calc(0.3 * var(--tile-size));
+	width: calc(0.3 * var(--tile-size));
+}
+
+.attacking::after {
+	content: '';
+	border-radius: 50%;
+	pointer-events: none;
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	border: 8px solid rgba(0, 0, 0, 0.14);
+	transform: translate(-50%, -50%);
+	height:  var(--tile-size);
+	width: var(--tile-size);
+}
