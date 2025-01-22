@@ -9,7 +9,8 @@
 		"paths": {
 			"@/app/*": ["./src/app/*"],
 			"@/styles/*": ["./src/styles/*"],
-			"@/helpers/*": ["./src/helpers/*"]
+			"@/helpers/*": ["./src/helpers/*"],
+			"@/store/*": ["./src/store/*"]
 		},
 		"resolveJsonModule": true,
 		"allowJs": true,

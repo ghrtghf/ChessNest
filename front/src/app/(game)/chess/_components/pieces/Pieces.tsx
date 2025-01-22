@@ -1,18 +1,31 @@
+'use client'
+
 import { useRef, useState } from 'react'
-import type { DragEvent } from 'react'
+import type { MouseEvent } from 'react'
 
 import { copyPosition } from '@/helpers/copy-position'
 import { initialPosition } from '@/helpers/initial-position'
+import { useGame } from '@/store/game'
+import { usePiece } from '@/store/piece'
 
 import { Piece } from './Piece'
 
 import './Pieces.css'
 
 export const Pieces = () => {
-	const [state, setState] = useState(initialPosition())
+	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1]) as unknown[][]
+	const candidatesMoves = useGame((stateGame) => stateGame.candidatesMoves)
+	const setCandidatesMoves = useGame((stateGame) => stateGame.setCandidatesMoves)
+	const setNewCurrentPosition = useGame((stateGame) => stateGame.setNewCurrentPosition)
+
+	const dragging = usePiece((statePiece) => statePiece.dragging)
+	const setDragging = usePiece((statePiece) => statePiece.setDragging)
+	const setRefPiece = usePiece((statePiece) => statePiece.setRefPiece)
+	const refPiece = usePiece((statePiece) => statePiece.refPiece)
+
 	const ref = useRef<HTMLDivElement | null>(null)
 
-	const calculateCoords = (event: DragEvent<HTMLDivElement>) => {
+	const calculateCoords = (event: MouseEvent<HTMLDivElement>) => {
 		const { top, left, width } = ref.current!.getBoundingClientRect()
 		const size = width / 8
 		const y = Math.floor((event.clientX - left) / size)
@@ -21,40 +34,100 @@ export const Pieces = () => {
 		return { x, y }
 	}
 
-	const onDrop = (event: DragEvent<HTMLDivElement>) => {
-		const newPosition = copyPosition(state)
+	const mouseMove = (event: MouseEvent<HTMLDivElement>) => {
+		if (dragging) {
+			const { width, top: topContainer, left: leftContainer } = ref.current!.getBoundingClientRect()
 
-		const { x, y } = calculateCoords(event)
-		console.log(y, x)
-		const [letter, number, piece] = event.dataTransfer.getData('text/plain').split(',')
+			const size = width / 8
 
-		newPosition[Number(number)][Number(letter)] = ''
-		newPosition[x][y] = piece
+			const mouseCatchX = (event.clientX - leftContainer) / size
+			const mouseCatchY = (event.clientY - topContainer) / size
 
-		setState(newPosition)
+			const mouseX = mouseCatchX * 100 - 50
+			const mouseY = mouseCatchY * 100 - 55
+
+			const style = window.getComputedStyle(refPiece!)
+			let topElement
+			let leftElement
+
+			if (style.transform.startsWith('matrix')) {
+				const matrixValues = style.transform.match(/matrix\(([^)]+)\)/)![1].split(', ')
+				leftElement = Number.parseFloat(matrixValues[4])
+				topElement = Number.parseFloat(matrixValues[5])
+			}
+
+			leftElement = mouseX
+			topElement = mouseY
+
+			const clampedX = Math.max(-50, Math.min(750, Number(leftElement)))
+			const clampedY = Math.max(-50, Math.min(750, Number(topElement)))
+
+			refPiece!.style.transform = `translate(${clampedX}%, ${clampedY}%)`
+		}
 	}
 
-	const onDragOver = (event: DragEvent<HTMLDivElement>) => {
-		// мышка по центру когда объект над зоной
+	const mouseUp = (event: MouseEvent<HTMLDivElement>) => {
+		if (dragging) {
+			setDragging(false)
+			setRefPiece(null)
+			refPiece!.classList.remove('dragging')
 
-		// ограничить область
-		// const rect = event.currentTarget.getBoundingClientRect()
-		// const mouseX = event.clientX
-		// const mouseY = event.clientY
+			const { width, top: topContainer, left: leftContainer } = ref.current!.getBoundingClientRect()
 
-		// const isInside = mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom
-		// // console.log(isInside)
-		// event.dataTransfer.effectAllowed = 'move'
-		event.preventDefault()
+			const size = width / 8
+
+			const mouseCatchX = (event.clientX - leftContainer) / size
+			const mouseCatchY = (event.clientY - topContainer) / size
+
+			const mouseX = mouseCatchX * 100 - 50
+			const mouseY = mouseCatchY * 100 - 55
+
+			if (mouseX < -50 || mouseX > 750 || mouseY < -50 || mouseY > 750) {
+				refPiece!.style.removeProperty('transform')
+			} else {
+				const newPosition = copyPosition(currentPosition)
+				const { x, y } = calculateCoords(event)
+
+				if (candidatesMoves.find((move) => move[0] === x && move[1] === y)) {
+					const classList = Array.from(refPiece!.classList)
+
+					const piece = classList.find((cls) => /^[a-z]{2}$/i.test(cls))
+					const letter = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][0]
+					const number = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][1]
+
+					if (x === Number(number) && y === Number(letter)) refPiece!.style.removeProperty('transform')
+
+					newPosition[Number(number)][Number(letter)] = ''
+					newPosition[x][y] = piece
+
+					setCandidatesMoves([])
+					setNewCurrentPosition(newPosition)
+				} else {
+					refPiece!.style.removeProperty('transform')
+				}
+			}
+		}
 	}
 
 	return (
-		<div className='pieces' ref={ref} onDragOver={onDragOver} onDrop={onDrop}>
-			{state.map((n, number) =>
-				n.map((_, letter) =>
+		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
+		<div
+			className='pieces'
+			ref={ref}
+			// onClick={onclick}
+			onMouseMove={mouseMove}
+			onMouseUp={mouseUp}
+		>
+			{currentPosition.map((n: any, number) =>
+				n.map((_: any, letter: number) =>
 					// eslint-disable-next-line style/multiline-ternary
-					state[number][letter] ? (
-						<Piece key={`${number}-${letter}`} letter={letter} number={number} piece={state[number][letter]} />
+					currentPosition[number][letter] ? (
+						<Piece
+							key={`${number}-${letter}`}
+							letter={letter}
+							number={number}
+							piece={currentPosition[number][letter] as string}
+						/>
 					) : null
 				)
 			)}

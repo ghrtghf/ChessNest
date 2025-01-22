@@ -1,87 +1,40 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import type { DragEvent, MouseEvent } from 'react'
+import { useRef } from 'react'
+import type { MouseEvent } from 'react'
 
-export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: unknown }) => {
-	// const [position, setPosition] = useState({ x: 0, y: 0 })
-	// const [dragging, setDragging] = useState(false)
-	// const elementRef = useRef<HTMLDivElement | null>(null)
-	// const offset = useRef({ x: 0, y: 0 })
+import { useGame } from '@/store/game'
+import { useHighlightPiece, usePiece } from '@/store/piece'
 
-	const onDragStart = (event: DragEvent<HTMLDivElement>) => {
-		event.dataTransfer.effectAllowed = 'move'
+import { getRookMoves } from '../arbiter/moves'
+
+export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
+	const setDragging = usePiece((state) => state.setDragging)
+	const setRefPiece = usePiece((state) => state.setRefPiece)
+	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
+
+	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
+
+	const turn = useGame((stateGame) => stateGame.turn)
+	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1]) as unknown[][]
+
+	const refPiece = useRef<HTMLDivElement | null>(null)
+
+	const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
 		event.currentTarget.classList.add('dragging')
-		event.dataTransfer.setData('text/plain', `${letter},${number},${piece}`)
-		setTimeout(() => {
-			const target = event.target as HTMLElement
-			target.style.display = 'none'
-		}, 0)
+		setDragging(true)
+		setRefPiece(refPiece.current)
+
+		if (turn === piece[0]) {
+			const candidateMoves = getRookMoves({ position: currentPosition, piece, number, letter })
+			setCandidatesMoves(candidateMoves)
+		} else {
+			setCandidatesMoves([])
+		}
+
+		setHighlightPiece(letter, number)
 	}
 
-	// const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
-	// 	event.currentTarget.classList.add('dragging')
-	// 	setDragging(true)
-
-	// 	// event.currentTarget.style.transform = 'translate(100px, 100px)'
-	// 	const element = elementRef.current
-	// 	if (!element) return
-
-	// 	const rect = element.getBoundingClientRect()
-	// 	// const centerX = rect.left
-	// 	// const centerY = rect.top
-
-	// 	// Вычисляем начальное смещение мыши относительно элемента
-	// 	offset.current = {
-	// 		x: rect.left - event.clientX,
-	// 		y: rect.top - event.clientY
-	// 	}
-
-	// }
-	// console.log(offset.current)
-	// const onMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-	// 	event.preventDefault()
-	// 	if (!dragging) return
-	// 	// console.log(event)
-	// 	// Вычисляем новую позицию
-	// 	const newX = event.clientX
-	// 	const newY = event.clientY
-
-	// 	setPosition({ x: newX, y: newY })
-
-	// 	elementRef.current!.style.left = `${newX - offset.current.x}px`
-
-	// 	elementRef.current!.style.top = `${newY - offset.current.y}px`
-	// }
-
-	// const onMouseUp = () => {
-	// 	setDragging(false)
-	// }
-
-	// const style = dragging
-	// 	? {
-	// 			transform: `translate(${position.x}%, ${position.y}%)`
-	// 		}
-	// 	: {}
-
-	function onDragEnd(event: DragEvent<HTMLDivElement>) {
-		const target = event.target as HTMLElement
-		target.style.display = 'block'
-		event.currentTarget.classList.remove('dragging')
-	}
-
-	return (
-		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
-		<div
-			className={`piece ${piece} p-${letter}${number}`}
-			draggable={true}
-			onDragEnd={onDragEnd}
-			// ref={elementRef}
-			onDragStart={onDragStart}
-			// style={style}
-			// onMouseDown={onMouseDown}
-			// onMouseMove={onMouseMove}
-			// onMouseUp={onMouseUp}
-		/>
-	)
+	// eslint-disable-next-line jsx-a11y/no-static-element-interactions
+	return <div className={`piece ${piece} p-${letter}${number}`} ref={refPiece} onMouseDown={onMouseDown} />
 }

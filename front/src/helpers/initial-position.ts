@@ -1,3 +1,10 @@
+export const numbers = Array.from({ length: 8 })
+	.fill(0)
+	.map((_, i) => 8 - i)
+export const letters = Array.from({ length: 8 })
+	.fill(0)
+	.map((_, i) => i + 1)
+
 export const initialPosition = () => {
 	const position = Array.from({ length: 8 })
 		.fill('')
