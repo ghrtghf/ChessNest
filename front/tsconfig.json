@@ -8,9 +8,9 @@
 		"moduleResolution": "bundler",
 		"paths": {
 			"@/app/*": ["./src/app/*"],
-			"@/styles/*": ["./src/styles/*"],
-			"@/helpers/*": ["./src/helpers/*"],
-			"@/store/*": ["./src/store/*"]
+			"@/shared/*": ["./src/shared/*"],
+			"@/widgets/*": ["./src/widgets/*"],
+			"@/entities/*": ["./src/entities/*"]
 		},
 		"resolveJsonModule": true,
 		"allowJs": true,

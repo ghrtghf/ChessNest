@@ -1,9 +1,4 @@
-interface Moves {
-	letter: number
-	number: number
-	piece: string
-	position: any
-}
+import type { Moves } from '../regular'
 
 export const getRookMoves = ({ position, piece, number, letter }: Moves) => {
 	const moves = [] as [number, number][]

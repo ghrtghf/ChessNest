@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Board } from './_components'
+import { Board } from '@/widgets/board'
 
 export const metadata: Metadata = {
 	title: 'Играть против друга | Pawn.com',

@@ -1,4 +1,4 @@
-export const getClassname = (i: number, j: number, currentPosition, candidatesMoves: [number, number][]) => {
+export const getClassname = (i: number, j: number, currentPosition: any[][], candidatesMoves: [number, number][]) => {
 	let c = 'tile'
 	c += (i + j) % 2 === 0 ? ' tile--dark' : ' tile--light'
 

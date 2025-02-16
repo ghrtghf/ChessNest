@@ -3,10 +3,10 @@
 import { useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
 
-import { copyPosition } from '@/helpers/copy-position'
-import { initialPosition } from '@/helpers/initial-position'
-import { useGame } from '@/store/game'
-import { usePiece } from '@/store/piece'
+import { copyPosition } from '../../../../../shared/helpers/copy-position'
+import { initialPosition } from '../../../../../shared/helpers/initial-position'
+import { useGame } from '../../../../../shared/store/game'
+import { usePiece } from '../../../../../shared/store/piece'
 
 import { Piece } from './Piece'
 
@@ -95,10 +95,17 @@ export const Pieces = () => {
 					const letter = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][0]
 					const number = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][1]
 
-					if (x === Number(number) && y === Number(letter)) refPiece!.style.removeProperty('transform')
+					// if (x === Number(number) && y === Number(letter)) refPiece!.style.removeProperty('transform')
+
+					// Проверка на взятие на проходе
+					if (piece?.endsWith('p') && !newPosition[x][y] && x !== Number(number) && y !== Number(letter)) {
+						newPosition[Number(number)][y] = ''
+					}
 
 					newPosition[Number(number)][Number(letter)] = ''
 					newPosition[x][y] = piece
+
+					// console.log('not take')
 
 					setCandidatesMoves([])
 					setNewCurrentPosition(newPosition)

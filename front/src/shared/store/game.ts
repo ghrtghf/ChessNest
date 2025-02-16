@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { initialPosition } from '@/helpers/initial-position'
+import { initialPosition } from '../helpers/initial-position'
 
 interface Game {
 	candidatesMoves: [number, number][]

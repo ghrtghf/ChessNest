@@ -1,6 +1,6 @@
 import { Ubuntu } from 'next/font/google'
 
-import '../styles/globals.css'
+import '../shared/styles/globals.css'
 
 const ubuntu = Ubuntu({
 	variable: '--font-ubuntu',

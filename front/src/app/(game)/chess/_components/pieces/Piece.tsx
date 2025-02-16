@@ -3,10 +3,10 @@
 import { useRef } from 'react'
 import type { MouseEvent } from 'react'
 
-import { useGame } from '@/store/game'
-import { useHighlightPiece, usePiece } from '@/store/piece'
+import { getValidMoves } from '@/shared/helpers/moves'
 
-import { getRookMoves } from '../arbiter/moves'
+import { useGame } from '../../../../../shared/store/game'
+import { useHighlightPiece, usePiece } from '../../../../../shared/store/piece'
 
 export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
 	const setDragging = usePiece((state) => state.setDragging)
@@ -16,7 +16,8 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
 
 	const turn = useGame((stateGame) => stateGame.turn)
-	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1]) as unknown[][]
+	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1]) as unknown[][]
+	const prevPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 2]) as unknown[][]
 
 	const refPiece = useRef<HTMLDivElement | null>(null)
 
@@ -26,7 +27,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 		setRefPiece(refPiece.current)
 
 		if (turn === piece[0]) {
-			const candidateMoves = getRookMoves({ position: currentPosition, piece, number, letter })
+			const candidateMoves = getValidMoves({ position, prevPosition, piece, number, letter })
 			setCandidatesMoves(candidateMoves)
 		} else {
 			setCandidatesMoves([])

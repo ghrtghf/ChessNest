@@ -1,15 +1,9 @@
-export const numbers = Array.from({ length: 8 })
-	.fill(0)
-	.map((_, i) => 8 - i)
-export const letters = Array.from({ length: 8 })
-	.fill(0)
-	.map((_, i) => i + 1)
-
 export const initialPosition = () => {
 	const position = Array.from({ length: 8 })
 		.fill('')
 		.map(() => Array.from({ length: 8 }).fill(''))
 
+	// белый ряд фигур сзади
 	position[0][0] = 'wr'
 	position[0][1] = 'wn'
 	position[0][2] = 'wb'
@@ -19,6 +13,7 @@ export const initialPosition = () => {
 	position[0][6] = 'wn'
 	position[0][7] = 'wr'
 
+	// черный ряд фигур сзади
 	position[7][0] = 'br'
 	position[7][1] = 'bn'
 	position[7][2] = 'bb'
@@ -28,6 +23,7 @@ export const initialPosition = () => {
 	position[7][6] = 'bn'
 	position[7][7] = 'br'
 
+	// пешки
 	for (let i = 0; i < 8; i++) {
 		position[1][i] = 'wp'
 		position[6][i] = 'bp'
