@@ -5,11 +5,13 @@ namespace App\Jobs;
 use App\Events\MatchFound;
 use App\Models\Game;
 use App\Models\Matchmaking;
+use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 
 class MatchmakingJob implements ShouldQueue
 {
@@ -28,25 +30,46 @@ class MatchmakingJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $lock = Cache::lock('matchmaking_lock', 10);
 
-        $requests = Matchmaking::orderBy('created_at', 'asc')->get();
-        foreach ($requests as $request) {
-            $opponent = Matchmaking::where('user_id', '!=', $request->user_id)
-                ->whereBetween('rating', [$request->rating - 100, $request->rating + 100])
-                ->orderBy('created_at', 'asc')
-                ->first();
+        if ($lock->get()) {
+            try {
+                Matchmaking::orderBy('created_at', 'asc')->chunk(100, function ($requests) {
+                    $processedUserIds = [];
 
-            if ($opponent) {
-                $game = Game::create([
-                    'player_white_id' => $request->user_id,
-                    'player_black_id' => $opponent->user_id,
-                    'started_at' => now(),
-                ]);
+                    foreach ($requests as $request) {
+                        $opponent = DB::table('matchmaking as m1')
+                            ->join('matchmaking as m2', function ($join) use ($request) {
+                                $join->on('m1.user_id', '!=', 'm2.user_id')
+                                    ->whereBetween('m2.rating', [$request->rating - 100, $request->rating + 100]);
+                            })
+                            ->where('m1.user_id', $request->user_id)
+                            ->orderBy('m2.created_at', 'asc')
+                            ->select('m2.user_id as opponent_id')
+                            ->first();
 
-                broadcast(new MatchFound($game));
+                        if ($opponent) {
+                            DB::transaction(function () use ($request, $opponent) {
+                                $game = Game::create([
+                                    'player_white_id' => $request->user_id,
+                                    'player_black_id' => $opponent->opponent_id,
+                                    'started_at' => now(),
+                                ]);
 
-                $request->delete();
-                $opponent->delete();
+                                broadcast(new MatchFound($game));
+                            });
+
+                            $processedUserIds[] = $request->user_id;
+                            $processedUserIds[] = $opponent->opponent_id;
+                        }
+                    }
+
+                    if (!empty($processedUserIds)) {
+                        Matchmaking::whereIn('user_id', $processedUserIds)->delete();
+                    }
+                });
+            } finally {
+                $lock->release();
             }
         }
     }
