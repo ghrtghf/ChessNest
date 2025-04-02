@@ -5,7 +5,8 @@
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
-	--tile-size: 102px;
+	--tile-size: 90px;
+	/* 102 */
 	--light-tile: #ecd4b1;
 	--dark-tile: #b68565;
 }

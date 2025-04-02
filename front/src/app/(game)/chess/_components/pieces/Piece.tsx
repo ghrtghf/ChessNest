@@ -4,9 +4,7 @@ import { useRef } from 'react'
 import type { MouseEvent } from 'react'
 
 import { getValidMoves } from '@/shared/helpers/moves'
-
-import { useGame } from '../../../../../shared/store/game'
-import { useHighlightPiece, usePiece } from '../../../../../shared/store/piece'
+import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
 
 export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
 	const setDragging = usePiece((state) => state.setDragging)
@@ -16,8 +14,8 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
 
 	const turn = useGame((stateGame) => stateGame.turn)
-	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1]) as unknown[][]
-	const prevPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 2]) as unknown[][]
+	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
+	const prevPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 2])
 
 	const refPiece = useRef<HTMLDivElement | null>(null)
 

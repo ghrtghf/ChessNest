@@ -1,4 +1,5 @@
 export * from './calculate-coords'
+export * from './change-position'
 export * from './copy-position'
 export * from './get-character'
 export * from './get-classname'
