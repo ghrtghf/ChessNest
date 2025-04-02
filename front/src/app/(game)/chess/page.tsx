@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 }
 
 export default function Chess() {
-	return (
-		<div className='flex h-screen w-screen justify-center items-center'>
-			<Board />
-		</div>
-	)
+	return <Board />
 }

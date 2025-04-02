@@ -1,3 +1,4 @@
+export * from './calculate-coords'
 export * from './copy-position'
 export * from './get-character'
 export * from './get-classname'

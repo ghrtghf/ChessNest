@@ -1,11 +1,11 @@
-.pieces {
+/* .pieces {
 	right: 0;
 	top: 0;
 	position: absolute;
 	z-index: 10;
 	left: 0;
 	bottom: 0;
-}
+} */
 
 .piece {
 	width: 12.5%;
@@ -13,7 +13,13 @@
 	background-size: 100%;
 	position: absolute;
 	cursor: grab;
+	touch-action: none;
+
+	overflow: hidden;
+	will-change: transform;
+
 	user-select: none;
+	z-index: 10;
 }
 
 .highlight {
@@ -25,6 +31,33 @@
 	z-index: 10;
 	top: 0;
 	pointer-events: none;
+	width: 12.5%;
+}
+
+.attacking {
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	z-index: 20;
+	height: 12.5%;
+	width: 12.5%;
+	border-style: solid;
+	border-radius: 100%;
+	border: 8px solid rgba(0, 0, 0, 0.14);
+}
+
+.hint {
+	background-color: rgba(0, 0, 0, 0.14);
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	background-clip: content-box;
+	padding: 4.2%;
+	border-radius: 50%;
+	z-index: 20;
+	height: 12.5%;
 	width: 12.5%;
 }
 

@@ -28,7 +28,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 
 		if (turn === piece[0]) {
 			const candidateMoves = getValidMoves({ position, prevPosition, piece, number, letter })
-			setCandidatesMoves(candidateMoves)
+			setCandidatesMoves(candidateMoves || [])
 		} else {
 			setCandidatesMoves([])
 		}
@@ -36,6 +36,12 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 		setHighlightPiece(letter, number)
 	}
 
-	// eslint-disable-next-line jsx-a11y/no-static-element-interactions
-	return <div className={`piece ${piece} p-${letter}${number}`} ref={refPiece} onMouseDown={onMouseDown} />
+	const changeRefPiece = () => {
+		setRefPiece(refPiece.current)
+	}
+
+	return (
+		// eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+		<div className={`piece ${piece} p-${letter}${number}`} ref={refPiece} onClick={changeRefPiece} onMouseDown={onMouseDown} />
+	)
 }

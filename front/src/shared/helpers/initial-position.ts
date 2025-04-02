@@ -1,4 +1,6 @@
 export const initialPosition = () => {
+	// создаем пустую доску 8x8
+	// и заполняем ее пустыми строками
 	const position = Array.from({ length: 8 })
 		.fill('')
 		.map(() => Array.from({ length: 8 }).fill(''))
@@ -29,5 +31,5 @@ export const initialPosition = () => {
 		position[6][i] = 'bp'
 	}
 
-	return position
+	return position as string[][]
 }
