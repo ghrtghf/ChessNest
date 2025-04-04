@@ -4,7 +4,7 @@ import { initialPosition } from '../helpers/initial-position'
 
 interface Game {
 	candidatesMoves: [number, number][]
-	currentPosition: ReturnType<typeof initialPosition>
+	currentPosition: ReturnType<typeof initialPosition>[]
 	turn: 'b' | 'w'
 	setCandidatesMoves: (moves: [number, number][]) => void
 	setNewCurrentPosition: (newPosition: ReturnType<typeof initialPosition>) => void

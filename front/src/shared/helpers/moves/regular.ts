@@ -16,7 +16,7 @@ export interface Moves {
 	prevPosition?: any
 }
 
-export const getRegularMoves = ({ position, piece, number, letter }: Moves): [number, number][] => {
+export const getRegularMoves = ({ position, piece, number, letter }: Moves) => {
 	if (piece.endsWith('n')) return getKnightMoves({ position, number, letter, piece })
 	if (piece.endsWith('b')) return getBishopMoves({ position, piece, letter, number })
 	if (piece.endsWith('r')) return getRookMoves({ position, piece, number, letter })
@@ -29,7 +29,7 @@ export const getValidMoves = ({ position, prevPosition, piece, number, letter }:
 	let moves = getRegularMoves({ position, piece, number, letter })
 
 	if (piece.endsWith('p')) {
-		moves = [...moves, ...getPawnCaptures({ position, prevPosition, piece, number, letter })]
+		moves = [...(moves || []), ...getPawnCaptures({ position, prevPosition, piece, number, letter })]
 	}
 
 	return moves

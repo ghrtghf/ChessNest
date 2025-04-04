@@ -1,4 +1,4 @@
-export const copyPosition = (position: unknown[][]) => {
+export const copyPosition = (position: string[][]) => {
 	const newPosition = Array.from({ length: 8 })
 		.fill('')
 		.map(() => Array.from({ length: 8 }).fill(''))
@@ -8,6 +8,7 @@ export const copyPosition = (position: unknown[][]) => {
 			newPosition[number][letter] = position[number][letter]
 		}
 	}
+	// Просто копируем массив, чтобы не менять оригинальный
 
-	return newPosition
+	return newPosition as string[][]
 }

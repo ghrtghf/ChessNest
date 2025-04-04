@@ -1,14 +1,6 @@
-export const getClassname = (i: number, j: number, currentPosition: any[][], candidatesMoves: [number, number][]) => {
-	let c = 'tile'
-	c += (i + j) % 2 === 0 ? ' tile--dark' : ' tile--light'
+export const getClassname = (y: number, x: number) => {
+	let cell = 'tile'
+	cell += (y + x) % 2 === 0 ? ' tile--dark' : ' tile--light'
 
-	if (candidatesMoves.find((move) => move[0] === i && move[1] === j)) {
-		if (currentPosition[i][j]) {
-			c += ' attacking'
-		} else {
-			c += ' hint'
-		}
-	}
-
-	return c
+	return cell
 }
