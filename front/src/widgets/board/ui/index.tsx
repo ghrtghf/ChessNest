@@ -5,6 +5,7 @@ import type { MouseEvent } from 'react'
 
 import { Pieces } from '@/app/(game)/chess/_components/pieces'
 import { Letters, Numbers } from '@/entities/coordinates'
+import { Popup } from '@/entities/popup'
 import { changePosition, getClassname, letters, numbers } from '@/shared/helpers'
 import { useHighlightPiece, usePiece } from '@/shared/store'
 
@@ -84,7 +85,7 @@ export const Board = () => {
 	return (
 		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 		<div
-			className='flex overflow-y-hidden h-screen w-screen justify-center items-center'
+			className=' flex overflow-y-hidden h-screen w-screen justify-center items-center'
 			onMouseMove={mouseMove}
 			onMouseUp={mouseUp}
 		>
@@ -98,6 +99,7 @@ export const Board = () => {
 				<Numbers numbers={numbers} />
 				<Letters letters={letters} />
 				<Pieces />
+				<Popup />
 			</div>
 		</div>
 	)

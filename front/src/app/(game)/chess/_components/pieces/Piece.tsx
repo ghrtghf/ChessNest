@@ -10,6 +10,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const setDragging = usePiece((state) => state.setDragging)
 	const setRefPiece = usePiece((state) => state.setRefPiece)
 	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
+	const castleDirection = useGame((state) => state.castleDirection)
 
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
 
@@ -25,7 +26,14 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 		setRefPiece(refPiece.current)
 
 		if (turn === piece[0]) {
-			const candidateMoves = getValidMoves({ position, prevPosition, piece, number, letter })
+			const candidateMoves = getValidMoves({
+				position,
+				prevPosition,
+				piece,
+				number,
+				letter,
+				castleDirection: castleDirection[turn]
+			})
 			setCandidatesMoves(candidateMoves || [])
 		} else {
 			setCandidatesMoves([])

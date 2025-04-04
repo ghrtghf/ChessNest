@@ -9,6 +9,9 @@
 	/* 102 */
 	--light-tile: #ecd4b1;
 	--dark-tile: #b68565;
+
+	--black: #000;
+	--white: #fff;
 }
 
 @layer components {
@@ -18,24 +21,6 @@
 	.tile--dark {
 		@apply bg-dark relative;
 	}
-
-	/* .hint::after {
-		@apply block absolute left-1/2 top-1/2 pointer-events-none rounded-full;
-		content: '';
-		background-color: rgba(0, 0, 0, 0.14);
-		transform: translate(-50%, -50%);
-		height: calc(0.3 * var(--tile-size));
-		width: calc(0.3 * var(--tile-size));
-	} */
-
-	/* .attacking::after {
-		@apply block absolute left-1/2 top-1/2 pointer-events-none rounded-full border-solid;
-		content: '';
-		border: 8px solid rgba(0, 0, 0, 0.14);
-		transform: translate(-50%, -50%);
-		height: var(--tile-size);
-		width: var(--tile-size);
-	} */
 }
 
 @media (prefers-color-scheme: dark) {
