@@ -4,6 +4,7 @@ import { useGame, usePiece, usePopup } from '../store'
 
 import { calculateCoords } from './calculate-coords'
 import { copyPosition } from './copy-position'
+import { isStalemate } from './moves'
 import { getCastlingDirections } from './moves/castling-direction'
 
 interface Move {
@@ -31,8 +32,8 @@ export const changePosition = (event: MouseEvent) => {
 		const currentPositionY = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][0]
 		const currentPositionX = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][1]
 
-		// Проверка на превращение пешки на конце доски
 		if ((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)) {
+			// Проверка на превращение пешки на конце доски
 			usePopup.setState({
 				status: STATUS.promoting,
 				promotingSquare: { piece, x, y, currentPositionX: Number(currentPositionX), currentPositionY: Number(currentPositionY) }
@@ -89,6 +90,16 @@ export const changePosition = (event: MouseEvent) => {
 			currentPosition: [...positions.currentPosition, newPosition],
 			turn: positions.turn === 'w' ? 'b' : 'w'
 		}))
+
+		if (
+			isStalemate(
+				newPosition,
+				piece?.startsWith('b') ? 'w' : 'b',
+				castleDirection[piece?.startsWith('b') ? 'w' : 'b']
+			)
+		) {
+			console.log('hello')
+		}
 	} else {
 		refPiece!.style.removeProperty('transform')
 	}
