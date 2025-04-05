@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Chess() {
 	return (
-		<div className='flex'>
+		<div className='flex items-center justify-center gap-6'>
 			<Board />
 			<InfoGame />
 		</div>

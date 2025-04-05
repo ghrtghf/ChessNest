@@ -1,15 +1,14 @@
 import { create } from 'zustand'
 
-import { STATUS } from '../constants/status'
 import { initialPosition } from '../helpers/initial-position'
 
 interface Game {
 	candidatesMoves: [number, number][]
-	castleDirection: { w: 'both' | 'left' | 'right'; b: 'both' | 'left' | 'right' }
+	castleDirection: { w: 'both' | 'left' | 'none' | 'right'; b: 'both' | 'left' | 'none' | 'right' }
 	currentPosition: ReturnType<typeof initialPosition>[]
 	turn: 'b' | 'w'
 	setCandidatesMoves: (moves: [number, number][]) => void
-	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'right') => void
+	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'none' | 'right') => void
 	setNewCurrentPosition: (newPosition: ReturnType<typeof initialPosition>) => void
 }
 
@@ -27,7 +26,7 @@ export const useGame = create<Game>((set) => ({
 		w: 'both',
 		b: 'both'
 	},
-	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'right') =>
+	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'none' | 'right') =>
 		set((state) => ({
 			castleDirection: {
 				...state.castleDirection,

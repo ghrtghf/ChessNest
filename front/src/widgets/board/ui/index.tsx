@@ -1,13 +1,16 @@
 'use client'
 
 import { useLayoutEffect, useRef } from 'react'
-import type { MouseEvent } from 'react'
 
-import { Pieces } from '@/app/(game)/chess/_components/pieces'
 import { Letters, Numbers } from '@/entities/coordinates'
 import { Popup } from '@/entities/popup'
 import { changePosition, getClassname, letters, numbers } from '@/shared/helpers'
-import { useHighlightPiece, usePiece } from '@/shared/store'
+import { getKingPosition } from '@/shared/helpers/moves/check'
+import { isPlayerInCheck } from '@/shared/helpers/moves/is-player-check'
+import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
+import { InfoGame } from '@/widgets/info-game'
+
+import { Pieces } from './pieces'
 
 export const Board = () => {
 	const highlightPiece = useHighlightPiece((state) => state.highlightPiece)
@@ -17,13 +20,18 @@ export const Board = () => {
 	const refPiece = usePiece((statePiece) => statePiece.refPiece)
 	const setRefPieces = usePiece((statePiece) => statePiece.setRefPieces)
 
+	const currentPosition = useGame((stateGame) => stateGame.currentPosition)
+	const turn = useGame((stateGame) => stateGame.turn)
+
+	const position = currentPosition[currentPosition.length - 1]
+
 	const refPieces = useRef<HTMLDivElement | null>(null)
 
 	useLayoutEffect(() => {
 		setRefPieces(refPieces.current)
 	}, [refPieces])
 
-	const mouseMove = (event: MouseEvent<HTMLDivElement>) => {
+	const mouseMove = (event: MouseEvent) => {
 		if (dragging) {
 			const { width, top: topContainer, left: leftContainer } = refPieces.current!.getBoundingClientRect()
 
@@ -55,7 +63,7 @@ export const Board = () => {
 		}
 	}
 
-	const mouseUp = (event: MouseEvent<HTMLDivElement>) => {
+	const mouseUp = (event: MouseEvent) => {
 		if (dragging) {
 			setDragging(false)
 
@@ -82,25 +90,49 @@ export const Board = () => {
 		}
 	}
 
+	const checkTile = (() => {
+		const isInCheck = isPlayerInCheck({
+			position,
+			positionAfterMove: position,
+			player: turn
+		})
+
+		if (isInCheck) return getKingPosition(position, turn)
+
+		return null
+	})()
+
+	// if (check) {
+	// 	const audio = new Audio('sounds/arthas/1.mp3')
+
+	// 	// Воспроизводим звук
+	// 	audio.play().catch((error) => {
+	// 		console.error('Ошибка при воспроизведении звука:', error)
+	// 	})
+	// }
+
+	useLayoutEffect(() => {
+		document.addEventListener('mousemove', mouseMove)
+		document.addEventListener('mouseup', mouseUp)
+
+		return () => {
+			document.removeEventListener('mousemove', mouseMove)
+			document.removeEventListener('mouseup', mouseUp)
+		}
+	}, [dragging])
+
 	return (
-		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
-		<div
-			className=' flex overflow-y-hidden h-screen w-screen justify-center items-center'
-			onMouseMove={mouseMove}
-			onMouseUp={mouseUp}
-		>
-			<div className='relative w-[calc(8*var(--tile-size))] h-[calc(8*var(--tile-size))]' ref={refPieces}>
-				{highlightPiece && <div className={`highlight p-${highlightPiece}`} />}
-				<div className='absolute grid grid-cols-8-tiles grid-rows-8-tiles w-[calc(8*var(--tile-size))] rounded overflow-hidden select-none'>
-					{numbers.map((number, y) =>
-						letters.map((letter, x) => <div className={getClassname(7 - y, x)} key={`cell-${number}-${letter}`} />)
-					)}
-				</div>
-				<Numbers numbers={numbers} />
-				<Letters letters={letters} />
-				<Pieces />
-				<Popup />
+		<div className='relative w-[calc(8*var(--tile-size))] h-[calc(8*var(--tile-size))]' ref={refPieces}>
+			{highlightPiece && <div className={`highlight p-${highlightPiece}`} />}
+			<div className='absolute grid grid-cols-8-tiles grid-rows-8-tiles w-[calc(8*var(--tile-size))] rounded overflow-hidden select-none'>
+				{numbers.map((number, y) =>
+					letters.map((letter, x) => <div className={getClassname(7 - y, x, checkTile)} key={`cell-${number}-${letter}`} />)
+				)}
 			</div>
+			<Numbers numbers={numbers} />
+			<Letters letters={letters} />
+			<Pieces />
+			<Popup />
 		</div>
 	)
 }
