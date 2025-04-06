@@ -16,6 +16,17 @@
 	z-index: 10;
 }
 
+.checked {
+	width: var(--tile-size);
+	height: var(--tile-size);
+	background-image: url('/check/arthas/arthas-check.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	left: 0;
+	top: 0;
+}
+
 .highlight {
 	background-color: rgb(255, 255, 51);
 	opacity: 0.5;

@@ -1,3 +1,6 @@
+import { performMove } from '../change-position'
+
+import { getCastlingMoves } from './castling'
 import {
 	getBishopMoves,
 	getKingMoves,
@@ -7,13 +10,15 @@ import {
 	getQueenMoves,
 	getRookMoves
 } from './figures'
+import { isPlayerInCheck } from './is-player-check'
 
 export interface Moves {
+	castleDirection?: 'both' | 'left' | 'none' | 'right'
 	letter: number
 	number: number
 	piece: string
-	position: any
-	prevPosition?: any
+	position: string[][]
+	prevPosition?: string[][]
 }
 
 export const getRegularMoves = ({ position, piece, number, letter }: Moves) => {
@@ -26,13 +31,26 @@ export const getRegularMoves = ({ position, piece, number, letter }: Moves) => {
 }
 
 export const getValidMoves = ({ position, prevPosition, castleDirection, piece, number, letter }: Moves) => {
+	const notInCheckMoves = [] as [number, number][]
+
+	// обычные движения
 	let moves = getRegularMoves({ position, piece, number, letter })
 
+	// взятие на проходе
 	if (piece.endsWith('p')) {
 		moves = [...(moves || []), ...getPawnCaptures({ position, prevPosition, piece, number, letter })]
 	}
 
-	if (piece.endsWith('k')) moves = [...moves, ...getCastlingMoves({ position, castleDirection, piece, rank, file })]
+	// TODO: Рокировка при наведении на ладью
+	// рокировка
+	if (piece.endsWith('k')) moves = [...(moves || []), ...getCastlingMoves({ position, castleDirection, piece, number, letter })]
 
-	return moves
+	moves?.forEach(([x, y]) => {
+		const positionAfterMove = performMove({ position, piece, number, letter, x, y })
+		// debugger
+		if (!isPlayerInCheck({ positionAfterMove, position, player: piece[0] })) {
+			notInCheckMoves.push([x, y])
+		}
+	})
+	return notInCheckMoves
 }

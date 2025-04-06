@@ -4,12 +4,13 @@
 import type { CSSProperties } from 'react'
 import { X } from 'lucide-react'
 
-import { STATUS } from '@/shared/constants/status'
+// import { STATUS_POPUP } from '@/shared/constants/status'
 import { copyPosition } from '@/shared/helpers'
 import { useGame, usePopup } from '@/shared/store'
+import { STATUS_GAME } from '@/shared/constants/status'
 
 export const PromotionBox = () => {
-	const setStatus = usePopup((state) => state.setStatus)
+	const setStatus = useGame((state) => state.setStatus)
 	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
 	const setNewCurrentPosition = useGame((state) => state.setNewCurrentPosition)
 
@@ -61,7 +62,7 @@ export const PromotionBox = () => {
 
 		setCandidatesMoves([])
 		setNewCurrentPosition(newPosition)
-		setStatus(STATUS.ongoing)
+		setStatus(STATUS_GAME.is_coming)
 	}
 
 	return (
@@ -69,7 +70,7 @@ export const PromotionBox = () => {
 			{options.map((option) => (
 				<div className={`popup__piece ${color}${option}`} key={option} onClick={() => changePiece(option)} />
 			))}
-			<div className='popup__cancel' onClick={() => setStatus(STATUS.ongoing)}>
+			<div className='popup__cancel' onClick={() => setStatus(STATUS_GAME.is_coming)}>
 				<X color='#8b8987' />
 			</div>
 		</div>

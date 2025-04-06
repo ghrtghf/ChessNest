@@ -3,9 +3,7 @@
 import { changePosition } from '@/shared/helpers'
 import { useGame } from '@/shared/store'
 
-import { Piece } from './Piece'
-
-import './Pieces.css'
+import { Piece } from '../piece'
 
 export const Pieces = () => {
 	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])

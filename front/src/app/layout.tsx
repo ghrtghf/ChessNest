@@ -1,6 +1,7 @@
 import { Ubuntu } from 'next/font/google'
 
 import '../shared/styles/globals.css'
+import '../shared/styles/pieces.css'
 
 const ubuntu = Ubuntu({
 	variable: '--font-ubuntu',
@@ -14,7 +15,7 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang='en'>
+		<html className='dark' lang='en'>
 			<body className={`${ubuntu.variable} antialiased`}>{children}</body>
 		</html>
 	)
