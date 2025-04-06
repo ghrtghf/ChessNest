@@ -88,10 +88,25 @@ export const changePosition = (event: MouseEvent) => {
 		newPosition[x][y] = piece || ''
 
 		useGame.setState({ candidatesMoves: [] })
-		useGame.setState((positions) => ({
-			currentPosition: [...positions.currentPosition, newPosition],
-			turn: positions.turn === 'w' ? 'b' : 'w'
-		}))
+		useGame.setState((positions) => {
+			// currentPosition: [...positions.currentPosition, newPosition],
+			// turn: positions.turn === 'w' ? 'b' : 'w'
+			// const colorPosition = positions.myColor === 'w' ? newPosition : newPosition.reverse()
+
+			const updatedPositions = [...positions.currentPosition, newPosition]
+
+			const { websocket } = useWebsocket.getState()
+
+			if (websocket && websocket.readyState === WebSocket.OPEN) {
+				websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
+				console.log(JSON.stringify({ position: updatedPositions, type: 'move' }))
+			}
+
+			return {
+				currentPosition: updatedPositions,
+				turn: positions.turn === 'w' ? 'b' : 'w'
+			}
+		})
 
 		if (insufficientMaterial(newPosition)) {
 			useGame.setState({ status: STATUS_GAME.stalemate })

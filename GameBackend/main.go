@@ -108,7 +108,6 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	// Цикл чтения сообщений от клиента
 	for {
 		var message map[string]interface{}
 		err := conn.ReadJSON(&message)
@@ -116,17 +115,26 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Ошибка чтения:", err)
 			break
 		}
-
+		
 		fmt.Printf("Сообщение в игре %s: %v\n", gameId, message)
 
-		// Отправляем сообщение другим игрокам
+		var data interface{}
+		if message["type"] == "move" {
+			// Просто берём всё содержимое поля "position"
+			data = message["position"]
+		} else {
+			data = message["data"]
+		}
+
 		clientsMu.Lock()
 		for _, c := range clients[gameId] {
 			if c != client {
-				c.conn.WriteJSON(map[string]interface{}{
+				if err := c.conn.WriteJSON(map[string]interface{}{
 					"type": message["type"],
-					"data": message["data"],
-				})
+					"data": data,
+				}); err != nil {
+					fmt.Println("Ошибка записи JSON:", err)
+				}
 			}
 		}
 		clientsMu.Unlock()

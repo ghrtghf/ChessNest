@@ -9,10 +9,12 @@ interface Game {
 	candidatesMoves: [number, number][]
 	castleDirection: { w: 'both' | 'left' | 'none' | 'right'; b: 'both' | 'left' | 'none' | 'right' }
 	currentPosition: ReturnType<typeof initialPosition>[]
+	myColor: any
 	status: 'black wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white wins'
 	turn: 'b' | 'w'
 	setCandidatesMoves: (moves: [number, number][]) => void
 	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'none' | 'right') => void
+	setMyColor: (state: any) => void
 	setNewCurrentPosition: (newPosition: ReturnType<typeof initialPosition>) => void
 	setNewGame: () => void
 	setReceivedPosition: (newPosition: string[][]) => void
@@ -20,10 +22,33 @@ interface Game {
 }
 
 export const useGame = create<Game>((set) => ({
-	currentPosition: [initialPosition()],
+	currentPosition: [],
 	setReceivedPosition: (newPosition) =>
-		set((positions) => ({
-			currentPosition: [...positions.currentPosition, newPosition]
+		set((positions) => {
+			let colorPosition
+
+			if (positions.myColor === 'w' && positions.turn === 'b') {
+				colorPosition = newPosition.slice().reverse()
+			} else if (positions.myColor === 'b' && positions.turn === 'b') {
+				colorPosition = newPosition
+			} else if (positions.myColor === 'w' && positions.turn === 'w') {
+				colorPosition = newPosition
+			} else if (positions.myColor === 'b' && positions.turn === 'w') {
+				colorPosition = newPosition.slice().reverse()
+			}
+
+			console.log(positions.myColor, positions.turn)
+
+			return {
+				currentPosition: [...positions.currentPosition, colorPosition!],
+				turn: positions.turn === 'w' ? 'b' : 'w'
+			}
+		}),
+	myColor: null,
+	setMyColor: (color) =>
+		set(() => ({
+			myColor: color,
+			currentPosition: [initialPosition(color)]
 		})),
 	setNewCurrentPosition: (newPosition) =>
 		set((positions) => {
@@ -46,7 +71,7 @@ export const useGame = create<Game>((set) => ({
 	turn: 'w',
 	setNewGame: () =>
 		set({
-			currentPosition: [initialPosition()],
+			// currentPosition: [initialPosition()],
 			turn: 'w',
 			status: STATUS_GAME.is_coming,
 			castleDirection: {

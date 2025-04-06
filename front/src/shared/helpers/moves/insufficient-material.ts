@@ -19,8 +19,6 @@ export const insufficientMaterial = (position: string[][]) => {
 
 	if (pieces.length === 3 && pieces.some((p) => p.endsWith('b') || p.endsWith('n'))) return true
 
-	console.log(findPieceCoords(position, 'wb')[0], findPieceCoords(position, 'bb')[0])
-
 	if (
 		pieces.length === 4 &&
 		pieces.every((p) => p.endsWith('b') || p.endsWith('k')) &&

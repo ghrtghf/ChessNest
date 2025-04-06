@@ -14,8 +14,8 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const castleDirection = useGame((state) => state.castleDirection)
 
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
-	const myColor = useWebsocket((stateWebsocket) => stateWebsocket.myColor)
 
+	const myColor = useGame((stateWebsocket) => stateWebsocket.myColor)
 	const turn = useGame((stateGame) => stateGame.turn)
 	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
 	const prevPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 2])

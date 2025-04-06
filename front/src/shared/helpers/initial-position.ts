@@ -1,15 +1,16 @@
+import { useGame } from '../store'
 import { useWebsocket } from '../store/websocket'
 
-export const initialPosition = () => {
-	const color = useWebsocket.getState().myColor
-	console.log(color)
+export const initialPosition = (color: 'b' | 'w') => {
+	// const color = useGame.getState().myColor
+	// console.log(color)
 	// создаем пустую доску 8x8
 	// и заполняем ее пустыми строками
 	const position = Array.from({ length: 8 })
 		.fill('')
 		.map(() => Array.from({ length: 8 }).fill(''))
 
-		console.log(useWebsocket.getState().myColor)
+	console.log(color)
 
 	if (color === 'w') {
 		// белый ряд фигур сзади

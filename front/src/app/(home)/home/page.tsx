@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
@@ -17,20 +17,21 @@ import { Button } from '@/shared/ui/button'
 
 export default function Home() {
 	const router = useRouter()
-	const [loading, setLoading] = useState(false)
+	const [shouldConnect, setShouldConnect] = useState(false)
 
 	const setWebsocket = useWebsocket((state) => state.setWebsocket)
-	const setMyColor = useWebsocket((state) => state.setMyColor)
+	const setMyColor = useGame((state) => state.setMyColor)
 	const setIdRoom = useWebsocket((state) => state.setIdRoom)
 
 	const setReceivedPosition = useGame((state) => state.setReceivedPosition)
+
+	// const setReceivedPosition = useGame((state) => state.setReceivedPosition)
 	// const setPlayerBlackId = useWebsocket((state) => state.setPlayerBlackId)
 	// const setPlayerWhiteId = useWebsocket((state) => state.setPlayerWhiteId)
 
-	const idRoom = useWebsocket((state) => state.idRoom)
+	useEffect(() => {
+		if (!shouldConnect) return
 
-	const handleOnlineGame = () => {
-		setLoading(true)
 		const socket = new WebSocket(`ws://localhost:8080/ws?gameId=abc123`)
 		const userId = v4()
 
@@ -48,16 +49,19 @@ export default function Home() {
 		socket.onmessage = (event) => {
 			console.log('Сообщение от сервера:', event.data)
 
-			// setPlayerBlackId(event.data?.game?.player_black_id)
-			// setPlayerWhiteId(event.data?.game?.player_white_id)
 			const data = JSON.parse(event.data)
-			console.log(data)
+
 			if (data.type === 'init') {
 				setIdRoom(data.data.id)
 				setMyColor(data.data.color)
-				router.push(`/game/${data.data.id}`)
 			} else if (data.type === 'move') {
-				setReceivedPosition(data.data[data.data - 1])
+				console.log(data.data[data.data.length - 1])
+				setReceivedPosition(data.data[data.data.length - 1])
+				// useGame.setState((positions) => ({ currentPosition: [...positions.currentPosition, data.data[data.data - 1]] }))
+			} else if (data.type === 'game_start') {
+				console.log(useWebsocket.getState().idRoom)
+
+				router.push(`/game/${useWebsocket.getState().idRoom}`)
 			}
 			// myColor()
 		}
@@ -69,21 +73,20 @@ export default function Home() {
 		socket.onerror = (error) => {
 			console.error('Ошибка WebSocket:', error)
 		}
+	}, [shouldConnect])
 
-		// if (idRoom) {
-		// 	router.push(`/game/${idRoom}`)
-		// }
-		setLoading(false)
+	const handleOnlineGame = () => {
+		setShouldConnect(true)
 	}
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen gap-6'>
-			<Button className='w-[250px] h-[60px]' disabled={loading} onClick={handleOnlineGame}>
-				{loading && <Loader2 className='animate-spin' />}
+			<Button className='w-[250px] h-[60px]' onClick={handleOnlineGame}>
+				{/* {loading && <Loader2 className='animate-spin' />} */}
 				Играть по сети
 			</Button>
-			<Button className='w-[250px] h-[60px]' disabled={loading}>
-				{loading && <Loader2 className='animate-spin' />}
+			<Button className='w-[250px] h-[60px]'>
+				{/* {loading && <Loader2 className='animate-spin' />} */}
 				Играть на одном пк
 			</Button>
 		</div>
