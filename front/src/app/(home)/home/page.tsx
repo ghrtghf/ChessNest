@@ -61,6 +61,7 @@ export default function Home() {
 		if (idRoom) {
 			router.push(`/game/${idRoom}`)
 		}
+		setLoading(false)
 	}
 
 	return (
