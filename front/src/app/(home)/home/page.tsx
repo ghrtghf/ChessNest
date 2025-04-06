@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { v4 } from 'uuid'
@@ -15,6 +16,7 @@ import { Button } from '@/shared/ui/button'
 
 export default function Home() {
 	const router = useRouter()
+	const [loading, setLoading] = useState(false)
 
 	const setWebsocket = useWebsocket((state) => state.setWebsocket)
 	const setIdRoom = useWebsocket((state) => state.setIdRoom)
@@ -23,7 +25,8 @@ export default function Home() {
 
 	const idRoom = useWebsocket((state) => state.idRoom)
 
-	useEffect(() => {
+	const handleOnlineGame = () => {
+		setLoading(true)
 		const socket = new WebSocket(`ws://localhost:6001/games`)
 		const userId = v4()
 
@@ -55,21 +58,21 @@ export default function Home() {
 			console.error('Ошибка WebSocket:', error)
 		}
 
-		return () => {
-			socket.close()
+		if (idRoom) {
+			router.push(`/game/${idRoom}`)
 		}
-	}, [])
-
-	const handleOnlineGame = () => {
-		router.push(`/game/${idRoom}`)
 	}
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen gap-6'>
-			<Button className='w-[250px] h-[60px]' onClick={handleOnlineGame}>
+			<Button className='w-[250px] h-[60px]' disabled={loading} onClick={handleOnlineGame}>
+				{loading && <Loader2 className='animate-spin' />}
 				Играть по сети
 			</Button>
-			<Button className='w-[250px] h-[60px]'>Играть на одном пк</Button>
+			<Button className='w-[250px] h-[60px]' disabled={loading}>
+				{loading && <Loader2 className='animate-spin' />}
+				Играть на одном пк
+			</Button>
 		</div>
 	)
 }
