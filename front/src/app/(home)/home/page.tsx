@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { v4 } from 'uuid'
 
+import { useGame } from '@/shared/store'
 import { myColor, useWebsocket } from '@/shared/store/websocket'
 import { Button } from '@/shared/ui/button'
 
@@ -19,15 +20,18 @@ export default function Home() {
 	const [loading, setLoading] = useState(false)
 
 	const setWebsocket = useWebsocket((state) => state.setWebsocket)
+	const setMyColor = useWebsocket((state) => state.setMyColor)
 	const setIdRoom = useWebsocket((state) => state.setIdRoom)
-	const setPlayerBlackId = useWebsocket((state) => state.setPlayerBlackId)
-	const setPlayerWhiteId = useWebsocket((state) => state.setPlayerWhiteId)
+
+	const setReceivedPosition = useGame((state) => state.setReceivedPosition)
+	// const setPlayerBlackId = useWebsocket((state) => state.setPlayerBlackId)
+	// const setPlayerWhiteId = useWebsocket((state) => state.setPlayerWhiteId)
 
 	const idRoom = useWebsocket((state) => state.idRoom)
 
 	const handleOnlineGame = () => {
 		setLoading(true)
-		const socket = new WebSocket(`ws://localhost:8080/ws?gameId=abc125`)
+		const socket = new WebSocket(`ws://localhost:8080/ws?gameId=abc123`)
 		const userId = v4()
 
 		socket.onopen = () => {
@@ -43,11 +47,15 @@ export default function Home() {
 
 		socket.onmessage = (event) => {
 			console.log('Сообщение от сервера:', event.data)
-			setIdRoom(event.data.game.id)
-			setPlayerBlackId(event.data.game.player_black_id)
-			setPlayerWhiteId(event.data.game.player_white_id)
-
-			myColor()
+			// setPlayerBlackId(event.data?.game?.player_black_id)
+			// setPlayerWhiteId(event.data?.game?.player_white_id)
+			if (event.type === 'init') {
+				setIdRoom(event.data.id)
+				setMyColor(event.data.color)
+			} else if (event.type === 'move') {
+				setReceivedPosition(event.data[event.data - 1])
+			}
+			// myColor()
 		}
 
 		socket.onclose = () => {

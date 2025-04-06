@@ -8,6 +8,7 @@ import { changePosition, getClassname, letters, numbers } from '@/shared/helpers
 import { getKingPosition } from '@/shared/helpers/moves/check'
 import { isPlayerInCheck } from '@/shared/helpers/moves/is-player-check'
 import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
+import { useWebsocket } from '@/shared/store/websocket'
 import { InfoGame } from '@/widgets/info-game'
 
 import { Pieces } from './pieces'
@@ -22,6 +23,8 @@ export const Board = () => {
 
 	const currentPosition = useGame((stateGame) => stateGame.currentPosition)
 	const turn = useGame((stateGame) => stateGame.turn)
+
+	const myColor = useWebsocket((stateWebsocket) => stateWebsocket.myColor)
 
 	const position = currentPosition[currentPosition.length - 1]
 
@@ -85,7 +88,9 @@ export const Board = () => {
 			if (clampedX === mouseX && clampedY === mouseY) {
 				refPiece!.style.transform = `translate(${clampedX}px, ${clampedY}px)`
 			} else {
-				changePosition(event)
+				if (myColor === turn) {
+					changePosition(event)
+				}
 			}
 		}
 	}

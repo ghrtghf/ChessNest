@@ -5,6 +5,7 @@ import type { MouseEvent } from 'react'
 
 import { getValidMoves } from '@/shared/helpers/moves'
 import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
+import { useWebsocket } from '@/shared/store/websocket'
 
 export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
 	const setDragging = usePiece((state) => state.setDragging)
@@ -13,6 +14,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const castleDirection = useGame((state) => state.castleDirection)
 
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
+	const myColor = useWebsocket((stateWebsocket) => stateWebsocket.myColor)
 
 	const turn = useGame((stateGame) => stateGame.turn)
 	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
@@ -25,7 +27,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 		setDragging(true)
 		setRefPiece(refPiece.current)
 
-		if (turn === piece[0]) {
+		if (turn === piece[0] && turn === myColor) {
 			const candidateMoves = getValidMoves({
 				position,
 				prevPosition,
