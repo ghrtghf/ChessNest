@@ -2,8 +2,11 @@
 	width: 12.5%;
 	height: 12.5%;
 	background-size: 100%;
+	background-repeat: no-repeat;
 	position: absolute;
 	cursor: grab;
+	/* TODO: Режим пьяные шахматы) */
+	/* transition: transform 0.3s ease; */
 	touch-action: none;
 
 	overflow: hidden;

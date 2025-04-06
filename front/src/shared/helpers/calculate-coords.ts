@@ -1,4 +1,4 @@
-import type { MouseEvent, RefObject } from 'react'
+import type { MouseEvent } from 'react'
 
 export const calculateCoords = (event: MouseEvent<HTMLDivElement>, ref: HTMLDivElement | null) => {
 	const { top, left, width } = ref!.getBoundingClientRect()

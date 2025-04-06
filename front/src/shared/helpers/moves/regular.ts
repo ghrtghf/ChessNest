@@ -25,12 +25,14 @@ export const getRegularMoves = ({ position, piece, number, letter }: Moves) => {
 	if (piece.endsWith('p')) return getPawnMoves({ position, piece, number, letter })
 }
 
-export const getValidMoves = ({ position, prevPosition, piece, number, letter }: Moves) => {
+export const getValidMoves = ({ position, prevPosition, castleDirection, piece, number, letter }: Moves) => {
 	let moves = getRegularMoves({ position, piece, number, letter })
 
 	if (piece.endsWith('p')) {
 		moves = [...(moves || []), ...getPawnCaptures({ position, prevPosition, piece, number, letter })]
 	}
+
+	if (piece.endsWith('k')) moves = [...moves, ...getCastlingMoves({ position, castleDirection, piece, rank, file })]
 
 	return moves
 }
