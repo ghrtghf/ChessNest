@@ -50,11 +50,14 @@ export default function Home() {
 
 			// setPlayerBlackId(event.data?.game?.player_black_id)
 			// setPlayerWhiteId(event.data?.game?.player_white_id)
-			if (event.data.type === 'init') {
-				setIdRoom(event.data.data.id)
-				setMyColor(event.data.data.color)
-			} else if (event.data.type === 'move') {
-				setReceivedPosition(event.data.data[event.data.data - 1])
+			const data = JSON.parse(event.data)
+			console.log(data)
+			if (data.type === 'init') {
+				setIdRoom(data.data.id)
+				setMyColor(data.data.color)
+				router.push(`/game/${data.data.id}`)
+			} else if (data.type === 'move') {
+				setReceivedPosition(data.data[data.data - 1])
 			}
 			// myColor()
 		}
@@ -68,9 +71,9 @@ export default function Home() {
 		}
 
 		// if (idRoom) {
-		router.push(`/game/${idRoom}`)
+		// 	router.push(`/game/${idRoom}`)
 		// }
-		// setLoading(false)
+		setLoading(false)
 	}
 
 	return (

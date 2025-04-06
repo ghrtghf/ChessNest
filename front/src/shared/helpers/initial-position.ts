@@ -1,13 +1,17 @@
 import { useWebsocket } from '../store/websocket'
 
 export const initialPosition = () => {
+	const color = useWebsocket.getState().myColor
+	console.log(color)
 	// создаем пустую доску 8x8
 	// и заполняем ее пустыми строками
 	const position = Array.from({ length: 8 })
 		.fill('')
 		.map(() => Array.from({ length: 8 }).fill(''))
 
-	if (useWebsocket.getState().myColor === 'w') {
+		console.log(useWebsocket.getState().myColor)
+
+	if (color === 'w') {
 		// белый ряд фигур сзади
 		position[0][0] = 'wr'
 		position[0][1] = 'wn'
@@ -33,7 +37,7 @@ export const initialPosition = () => {
 			position[1][i] = 'wp'
 			position[6][i] = 'bp'
 		}
-	} else if (useWebsocket.getState().myColor === 'b') {
+	} else if (color === 'b') {
 		// белый ряд фигур сзади
 		position[7][0] = 'wr'
 		position[7][1] = 'wn'

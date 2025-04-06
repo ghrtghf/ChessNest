@@ -1,4 +1,4 @@
-import { getCharacter } from '@/shared/helpers'
+	import { getCharacter } from '@/shared/helpers'
 import { cn } from '@/shared/utils/cn'
 
 export const Letters = ({ letters }: { letters: number[] }) => (
