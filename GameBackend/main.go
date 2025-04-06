@@ -49,9 +49,9 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 	gameClients := clients[gameId]
 	var playerColor string
 	if len(gameClients) == 0 {
-		playerColor = "white"
+		playerColor = "w"
 	} else if len(gameClients) == 1 {
-		playerColor = "black"
+		playerColor = "b"
 	} else {
 		// Если уже 2 игрока, закрываем соединение
 		conn.Close()
