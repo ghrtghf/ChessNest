@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 
 import { Letters, Numbers } from '@/entities/coordinates'
 import { Popup } from '@/entities/popup'
@@ -102,14 +102,16 @@ export const Board = () => {
 		return null
 	})()
 
-	// if (check) {
-	// 	const audio = new Audio('sounds/arthas/1.mp3')
-
-	// 	// Воспроизводим звук
-	// 	audio.play().catch((error) => {
-	// 		console.error('Ошибка при воспроизведении звука:', error)
-	// 	})
-	// }
+	// useEffect(() => {
+	// 	console.log(checkTile)
+	// 	if (checkTile) {
+	// 		const audio = new Audio('sounds/arthas/1.mp3')
+	// 		// Воспроизводим звук
+	// 		audio.play().catch((error) => {
+	// 			console.error('Ошибка при воспроизведении звука:', error)
+	// 		})
+	// 	}
+	// }, [checkTile])
 
 	useLayoutEffect(() => {
 		document.addEventListener('mousemove', mouseMove)

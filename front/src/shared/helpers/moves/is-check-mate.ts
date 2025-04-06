@@ -2,11 +2,10 @@ import { getPieces } from './check'
 import { isPlayerInCheck } from './is-player-check'
 import { getValidMoves } from './regular'
 
-export const isStalemate = (position: string[][], player: 'b' | 'w', castleDirection: 'both' | 'left' | 'none' | 'right') => {
-	// console.log(position, player, castleDirection)
+export const isCheckMate = (position: string[][], player: 'b' | 'w', castleDirection: 'both' | 'left' | 'none' | 'right') => {
 	const isInCheck = isPlayerInCheck({ position, positionAfterMove: position, player })
 
-	if (isInCheck) return false
+	if (!isInCheck) return false
 
 	const pieces = getPieces(position, player)
 
@@ -23,5 +22,5 @@ export const isStalemate = (position: string[][], player: 'b' | 'w', castleDirec
 		[]
 	)
 
-	return !isInCheck && moves.length === 0
+	return isInCheck && moves.length === 0
 }

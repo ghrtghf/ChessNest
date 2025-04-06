@@ -1,11 +1,12 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { STATUS } from '../constants/status'
+import { STATUS_GAME } from '../constants/status'
 import { useGame, usePiece, usePopup } from '../store'
 
 import { calculateCoords } from './calculate-coords'
 import { copyPosition } from './copy-position'
-import { isStalemate } from './moves'
+import { isCheckMate, isStalemate } from './moves'
 import { getCastlingDirections } from './moves/castling-direction'
+import { insufficientMaterial } from './moves/insufficient-material'
 
 interface Move {
 	letter: number
@@ -35,9 +36,9 @@ export const changePosition = (event: MouseEvent) => {
 		if ((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)) {
 			// Проверка на превращение пешки на конце доски
 			usePopup.setState({
-				status: STATUS.promoting,
 				promotingSquare: { piece, x, y, currentPositionX: Number(currentPositionX), currentPositionY: Number(currentPositionY) }
 			})
+			useGame.setState({ status: STATUS_GAME.promoting })
 			useGame.setState({ candidatesMoves: [] })
 			refPiece!.style.removeProperty('transform')
 			return
@@ -91,14 +92,16 @@ export const changePosition = (event: MouseEvent) => {
 			turn: positions.turn === 'w' ? 'b' : 'w'
 		}))
 
-		if (
-			isStalemate(
-				newPosition,
-				piece?.startsWith('b') ? 'w' : 'b',
-				castleDirection[piece?.startsWith('b') ? 'w' : 'b']
-			)
+		if (insufficientMaterial(newPosition)) {
+			useGame.setState({ status: STATUS_GAME.stalemate })
+		} else if (
+			isStalemate(newPosition, piece?.startsWith('b') ? 'w' : 'b', castleDirection[piece?.startsWith('b') ? 'w' : 'b'])
 		) {
-			console.log('hello')
+			useGame.setState({ status: STATUS_GAME.stalemate })
+		} else if (
+			isCheckMate(newPosition, piece?.startsWith('b') ? 'w' : 'b', castleDirection[piece?.startsWith('b') ? 'w' : 'b'])
+		) {
+			useGame.setState({ status: piece?.startsWith('b') ? STATUS_GAME.black : STATUS_GAME.white })
 		}
 	} else {
 		refPiece!.style.removeProperty('transform')
