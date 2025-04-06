@@ -1,6 +1,7 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { STATUS_GAME } from '../constants/status'
 import { useGame, usePiece, usePopup } from '../store'
+import { useWebsocket } from '../store/websocket'
 
 import { calculateCoords } from './calculate-coords'
 import { copyPosition } from './copy-position'
