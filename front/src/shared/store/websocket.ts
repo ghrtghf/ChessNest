@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 
 interface Websocket {
-	idRoom: number | null
+	idRoom: string | null
 	myColor: 'b' | 'w' | null
 	playerBlackId: number | null
 	playerWhiteId: number | null
 	websocket: WebSocket | null
-	setIdRoom: (state: number) => void
+	setIdRoom: (state: string) => void
 	setMyColor: (state: 'b' | 'w') => void
 	setPlayerBlackId: (state: number) => void
 	setPlayerWhiteId: (state: number) => void

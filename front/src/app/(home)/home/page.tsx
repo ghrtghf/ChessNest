@@ -47,6 +47,7 @@ export default function Home() {
 
 		socket.onmessage = (event) => {
 			console.log('Сообщение от сервера:', event.data)
+
 			// setPlayerBlackId(event.data?.game?.player_black_id)
 			// setPlayerWhiteId(event.data?.game?.player_white_id)
 			if (event.data.type === 'init') {
@@ -66,10 +67,10 @@ export default function Home() {
 			console.error('Ошибка WebSocket:', error)
 		}
 
-		if (idRoom) {
-			router.push(`/game/${idRoom}`)
-		}
-		setLoading(false)
+		// if (idRoom) {
+		router.push(`/game/${idRoom}`)
+		// }
+		// setLoading(false)
 	}
 
 	return (

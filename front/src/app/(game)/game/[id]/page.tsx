@@ -16,7 +16,7 @@ export default function Game() {
 	const { id } = useParams() as { id: string }
 	const idRoom = useWebsocket((state) => state.idRoom)
 
-	if (Number(id) !== idRoom) {
+	if (id !== idRoom) {
 		notFound()
 	}
 
