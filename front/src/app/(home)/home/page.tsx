@@ -49,11 +49,11 @@ export default function Home() {
 			console.log('Сообщение от сервера:', event.data)
 			// setPlayerBlackId(event.data?.game?.player_black_id)
 			// setPlayerWhiteId(event.data?.game?.player_white_id)
-			if (event.type === 'init') {
-				setIdRoom(event.data.id)
-				setMyColor(event.data.color)
-			} else if (event.type === 'move') {
-				setReceivedPosition(event.data[event.data - 1])
+			if (event.data.type === 'init') {
+				setIdRoom(event.data.data.id)
+				setMyColor(event.data.data.color)
+			} else if (event.data.type === 'move') {
+				setReceivedPosition(event.data.data[event.data.data - 1])
 			}
 			// myColor()
 		}
