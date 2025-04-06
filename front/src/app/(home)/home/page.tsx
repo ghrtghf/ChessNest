@@ -27,7 +27,7 @@ export default function Home() {
 
 	const handleOnlineGame = () => {
 		setLoading(true)
-		const socket = new WebSocket(`ws://localhost:8080/ws?gameId=abc123`)
+		const socket = new WebSocket(`ws://localhost:8080/ws?gameId=abc125`)
 		const userId = v4()
 
 		socket.onopen = () => {

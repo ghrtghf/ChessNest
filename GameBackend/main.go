@@ -1,97 +1,140 @@
-// main.go
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "sync"
+	"fmt"
+	"net/http"
+	"sync"
 
-    "github.com/gorilla/websocket"
+	"github.com/gorilla/websocket"
 )
 
 // Структура клиента
 type Client struct {
-    conn   *websocket.Conn
-    gameId string
+	conn   *websocket.Conn
+	gameId string
+	color  string // "white" или "black"
 }
 
 // Глобальная карта: gameId -> список клиентов
 var (
-    clients   = make(map[string][]*Client)
-    clientsMu sync.Mutex
+	clients   = make(map[string][]*Client)
+	clientsMu sync.Mutex
 )
 
 // Настройка WebSocket
 var upgrader = websocket.Upgrader{
-    CheckOrigin: func(r *http.Request) bool {
-        return true // Разрешаем подключение отовсюду (на локалке — ок)
-    },
+	CheckOrigin: func(r *http.Request) bool {
+		return true // Разрешаем подключение отовсюду
+	},
 }
 
 // Основной обработчик WebSocket-подключений
 func handleWS(w http.ResponseWriter, r *http.Request) {
-    // Получаем ID игры из query-параметра
-    gameId := r.URL.Query().Get("gameId")
-    if gameId == "" {
-        http.Error(w, "gameId is required", http.StatusBadRequest)
-        return
-    }
+	// Получаем ID игры из query-параметра
+	gameId := r.URL.Query().Get("gameId")
+	if gameId == "" {
+		http.Error(w, "gameId is required", http.StatusBadRequest)
+		return
+	}
 
-    // Обновляем соединение до WebSocket
-    conn, err := upgrader.Upgrade(w, r, nil)
-    if err != nil {
-        fmt.Println("Ошибка апгрейда:", err)
-        return
-    }
+	// Обновляем соединение до WebSocket
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println("Ошибка апгрейда:", err)
+		return
+	}
 
-    client := &Client{conn, gameId}
+	// Определяем цвет игрока
+	clientsMu.Lock()
+	gameClients := clients[gameId]
+	var playerColor string
+	if len(gameClients) == 0 {
+		playerColor = "white"
+	} else if len(gameClients) == 1 {
+		playerColor = "black"
+	} else {
+		// Если уже 2 игрока, закрываем соединение
+		conn.Close()
+		clientsMu.Unlock()
+		return
+	}
 
-    // Добавляем клиента в список
-    clientsMu.Lock()
-    clients[gameId] = append(clients[gameId], client)
-    clientsMu.Unlock()
+	client := &Client{conn, gameId, playerColor}
 
-    defer func() {
-        // Удаляем клиента при отключении
-        clientsMu.Lock()
-        defer clientsMu.Unlock()
-        conns := clients[gameId]
-        for i, c := range conns {
-            if c == client {
-                clients[gameId] = append(conns[:i], conns[i+1:]...)
-                break
-            }
-        }
-        conn.Close()
-    }()
+	// Добавляем клиента в список
+	clients[gameId] = append(clients[gameId], client)
+	
+	// Отправляем игроку его цвет
+	conn.WriteJSON(map[string]interface{}{
+		"type": "init",
+		"data": map[string]string{
+			"color": playerColor,
+			"id": gameId,
+		},
+	})
+	
+	// Если подключились оба игрока, уведомляем их
+	if len(clients[gameId]) == 2 {
+		for _, c := range clients[gameId] {
+			c.conn.WriteJSON(map[string]interface{}{
+				"type": "game_start",
+				"data": map[string]interface{}{
+					"message": "Оба игрока подключились",
+				},
+			})
+		}
+	}
+	clientsMu.Unlock()
 
-    // Цикл чтения сообщений от клиента
-    for {
-        var move map[string]interface{}
-        err := conn.ReadJSON(&move)
-        if err != nil {
-            fmt.Println("Ошибка чтения:", err)
-            break
-        }
+	defer func() {
+		// Удаляем клиента при отключении
+		clientsMu.Lock()
+		defer clientsMu.Unlock()
+		conns := clients[gameId]
+		for i, c := range conns {
+			if c == client {
+				clients[gameId] = append(conns[:i], conns[i+1:]...)
+				break
+			}
+		}
+		conn.Close()
+		
+		// Уведомляем оставшегося игрока о выходе соперника
+		if len(clients[gameId]) > 0 {
+			clients[gameId][0].conn.WriteJSON(map[string]interface{}{
+				"type": "opponent_disconnected",
+				"data": map[string]interface{}{},
+			})
+		}
+	}()
 
-        fmt.Printf("Ход в игре %s: %v\n", gameId, move)
+	// Цикл чтения сообщений от клиента
+	for {
+		var message map[string]interface{}
+		err := conn.ReadJSON(&message)
+		if err != nil {
+			fmt.Println("Ошибка чтения:", err)
+			break
+		}
 
-        // Отправляем ход другим игрокам
-        clientsMu.Lock()
-        for _, c := range clients[gameId] {
-            if c != client {
-                c.conn.WriteJSON(map[string]interface{}{
-                    "type": "move",
-                    "data": move,
-                })
-            }
-        }
-        clientsMu.Unlock()
-    }
+		fmt.Printf("Сообщение в игре %s: %v\n", gameId, message)
+
+		// Отправляем сообщение другим игрокам
+		clientsMu.Lock()
+		for _, c := range clients[gameId] {
+			if c != client {
+				c.conn.WriteJSON(map[string]interface{}{
+					"type": message["type"],
+					"data": message["data"],
+				})
+			}
+		}
+		clientsMu.Unlock()
+	}
 }
 
 func main() {
-    http.HandleFunc("/ws", handleWS)
-    fmt.Println("WebSocket сервер запущен на порту 8080")
-    http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/ws", handleWS)
+	fmt.Println("WebSocket сервер запущен на порту 8080")
+	http.ListenAndServe(":8080", nil)
 }
