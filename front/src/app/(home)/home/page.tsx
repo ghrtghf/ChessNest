@@ -26,8 +26,8 @@ export default function Home() {
 	const setReceivedPosition = useGame((state) => state.setReceivedPosition)
 
 	// const setReceivedPosition = useGame((state) => state.setReceivedPosition)
-	// const setPlayerBlackId = useWebsocket((state) => state.setPlayerBlackId)
-	// const setPlayerWhiteId = useWebsocket((state) => state.setPlayerWhiteId)
+	const setPlayerBlackId = useWebsocket((state) => state.setPlayerBlackId)
+	const setPlayerWhiteId = useWebsocket((state) => state.setPlayerWhiteId)
 
 	useEffect(() => {
 		if (!shouldConnect) return
@@ -54,6 +54,8 @@ export default function Home() {
 			if (data.type === 'init') {
 				setIdRoom(data.data.id)
 				setMyColor(data.data.color)
+				setPlayerBlackId(data.data.rating)
+				setPlayerWhiteId(data.data.rating)
 			} else if (data.type === 'move') {
 				console.log(data.data[data.data.length - 1])
 				setReceivedPosition(data.data[data.data.length - 1])
