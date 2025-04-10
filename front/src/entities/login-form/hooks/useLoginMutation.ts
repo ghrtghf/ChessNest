@@ -26,8 +26,8 @@ export function useLoginMutation() {
 				// toastMessageHandler(data)
 			} else {
 				router.push('/home')
-
-				Cookies.set('token', data.data.access_token, {
+				console.log(data)
+				Cookies.set('token', data?.data?.access_token, {
 					expires: 7,
 					sameSite: 'Strict'
 				})

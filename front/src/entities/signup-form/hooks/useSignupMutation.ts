@@ -27,7 +27,9 @@ export function useSignupMutation() {
 			} else {
 				router.push('/home')
 
-				Cookies.set('token', data.data.user.access_token, {
+				console.log(data)
+
+				Cookies.set('token', data?.data?.access_token, {
 					expires: 7,
 					sameSite: 'Strict'
 				})
