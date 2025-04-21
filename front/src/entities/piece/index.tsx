@@ -5,7 +5,6 @@ import type { MouseEvent } from 'react'
 
 import { getValidMoves } from '@/shared/helpers/moves'
 import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
-import { useWebsocket } from '@/shared/store/websocket'
 
 export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
 	const setDragging = usePiece((state) => state.setDragging)
@@ -15,7 +14,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
 
-	const myColor = useGame((stateWebsocket) => stateWebsocket.myColor)
+	// const myColor = useGame((stateWebsocket) => stateWebsocket.myColor)
 	const turn = useGame((stateGame) => stateGame.turn)
 	const position = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
 	const prevPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 2])
@@ -27,7 +26,9 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 		setDragging(true)
 		setRefPiece(refPiece.current)
 
-		if (turn === piece[0] && turn === myColor) {
+		// if (turn === piece[0] && turn === myColor) {
+		console.log(turn)
+		if (turn === piece[0]) {
 			const candidateMoves = getValidMoves({
 				position,
 				prevPosition,
@@ -36,6 +37,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 				letter,
 				castleDirection: castleDirection[turn]
 			})
+			console.log('@', 'hello', candidateMoves)
 			setCandidatesMoves(candidateMoves || [])
 		} else {
 			setCandidatesMoves([])

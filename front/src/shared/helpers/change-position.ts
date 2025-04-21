@@ -95,12 +95,12 @@ export const changePosition = (event: MouseEvent) => {
 
 			const updatedPositions = [...positions.currentPosition, newPosition]
 
-			const { websocket } = useWebsocket.getState()
+			// const { websocket } = useWebsocket.getState()
 
-			if (websocket && websocket.readyState === WebSocket.OPEN) {
-				websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
-				console.log(JSON.stringify({ position: updatedPositions, type: 'move' }))
-			}
+			// if (websocket && websocket.readyState === WebSocket.OPEN) {
+			// 	websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
+			// 	console.log(JSON.stringify({ position: updatedPositions, type: 'move' }))
+			// }
 
 			return {
 				currentPosition: updatedPositions,

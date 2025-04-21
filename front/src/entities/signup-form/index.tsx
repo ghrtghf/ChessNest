@@ -1,16 +1,24 @@
-'use client'
+'use client';
 
-import { useForm } from 'react-hook-form'
-import Link from 'next/link'
+import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 
-import { Button } from '@/shared/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form'
-import { Input } from '@/shared/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-import { useSignupMutation } from './hooks/useSignupMutation'
-import { SignupSchema, type TypeSignupSchema } from './model'
+
+import { Button } from '@/shared/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form';
+import { Input } from '@/shared/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+
+
+import { useSignupMutation } from './hooks/useSignupMutation';
+import { SignupSchema, type TypeSignupSchema } from './model';
+
+
+
+
 
 export function SignupForm() {
 	const form = useForm<TypeSignupSchema>({
@@ -20,7 +28,8 @@ export function SignupForm() {
 			email: '',
 			password: '',
 			confirmPassword: ''
-		}
+		},
+		mode: 'onChange'
 	})
 
 	const { signup, isLoadingSignup } = useSignupMutation()

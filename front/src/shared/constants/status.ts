@@ -1,7 +1,3 @@
-// export const STATUS_POPUP = {
-// 	ongoing: 'Ongoing',
-// } as const
-
 export const STATUS_GAME = {
 	black: 'black wins',
 	white: 'white wins',

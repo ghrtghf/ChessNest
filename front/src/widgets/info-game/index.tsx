@@ -21,8 +21,8 @@ type AlertType = 'draw' | 'surrender' | null
 
 export const InfoGame = () => {
 	const [alertType, setAlertType] = useState<AlertType>(null)
-	const playerBlackId = useWebsocket((state) => state.playerBlackId)
-	const playerWhiteId = useWebsocket((state) => state.playerWhiteId)
+	// const playerBlackId = useWebsocket((state) => state.playerBlackId)
+	// const playerWhiteId = useWebsocket((state) => state.playerWhiteId)
 
 	return (
 		<div className=''>
@@ -33,7 +33,10 @@ export const InfoGame = () => {
 							<AvatarImage src='https://github.com/shadcn.png' />
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
-						<h2>Рейтинг: {playerBlackId}</h2>
+						<h2>
+							Рейтинг:
+							{/* {playerBlackId} */}
+						</h2>
 					</div>
 
 					<div className='gap-4 flex flex-col justify-center items-center'>
@@ -41,7 +44,10 @@ export const InfoGame = () => {
 							<AvatarImage src='https://github.com/shadcn.png' />
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
-						<h2>Рейтинг: {playerWhiteId}</h2>
+						<h2>
+							Рейтинг:
+							{/* {playerWhiteId} */}
+						</h2>
 					</div>
 				</div>
 

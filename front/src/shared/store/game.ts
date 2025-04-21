@@ -22,7 +22,7 @@ interface Game {
 }
 
 export const useGame = create<Game>((set) => ({
-	currentPosition: [],
+	currentPosition: [initialPosition('w')],
 	setReceivedPosition: (newPosition) =>
 		set((positions) => {
 			let colorPosition
@@ -44,7 +44,7 @@ export const useGame = create<Game>((set) => ({
 				turn: positions.turn === 'w' ? 'b' : 'w'
 			}
 		}),
-	myColor: null,
+	myColor: 'w',
 	setMyColor: (color) =>
 		set(() => ({
 			myColor: color,
@@ -54,12 +54,12 @@ export const useGame = create<Game>((set) => ({
 		set((positions) => {
 			const updatedPositions = [...positions.currentPosition, newPosition]
 
-			const { websocket } = useWebsocket.getState()
+			// const { websocket } = useWebsocket.getState()
 
 			// Если websocket существует и открыт, отправляем сообщение
-			if (websocket && websocket.readyState === WebSocket.OPEN) {
-				websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
-			}
+			// if (websocket && websocket.readyState === WebSocket.OPEN) {
+			// 	websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
+			// }
 
 			return {
 				currentPosition: updatedPositions,

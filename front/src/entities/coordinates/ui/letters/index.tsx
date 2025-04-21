@@ -1,5 +1,6 @@
-	import { getCharacter } from '@/shared/helpers'
 import { cn } from '@/shared/utils/cn'
+
+const getCharacter = (char: number) => String.fromCharCode(char + 96)
 
 export const Letters = ({ letters }: { letters: number[] }) => (
 	<div className='absolute bottom-0 left-0 flex justify-around w-full'>
