@@ -4,10 +4,9 @@
 import type { CSSProperties } from 'react'
 import { X } from 'lucide-react'
 
-// import { STATUS_POPUP } from '@/shared/constants/status'
+import { STATUS_GAME } from '@/shared/constants/status'
 import { copyPosition } from '@/shared/helpers'
 import { useGame, usePopup } from '@/shared/store'
-import { STATUS_GAME } from '@/shared/constants/status'
 
 export const PromotionBox = () => {
 	const setStatus = useGame((state) => state.setStatus)

@@ -6,10 +6,9 @@ import { Letters, Numbers } from '@/entities/coordinates'
 import { GridTiles } from '@/entities/grid-tiles'
 import { Pieces } from '@/entities/pieces'
 import { Popup } from '@/entities/popup'
-import { changePosition, getClassname, letters, numbers } from '@/shared/helpers'
-import { getKingPosition } from '@/shared/helpers/moves/check'
-import { isPlayerInCheck } from '@/shared/helpers/moves/is-player-check'
-import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
+import { GameEnd } from '@/entities/popup-game-end'
+import { changePosition, letters, numbers } from '@/shared/helpers'
+import { useHighlightPiece, usePiece } from '@/shared/store'
 import { useCustomBoard } from '@/shared/store/custom-board'
 
 export const Board = () => {
@@ -105,6 +104,7 @@ export const Board = () => {
 			<Letters letters={letters} />
 			<Pieces />
 			<Popup />
+			<GameEnd />
 		</div>
 	)
 }

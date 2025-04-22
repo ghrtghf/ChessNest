@@ -82,7 +82,7 @@ export default function Home() {
 	}
 
 	return (
-		<div className='flex flex-col items-center justify-center h-screen gap-6'>
+		<div className='flex flex-col items-center justify-center h-full gap-6'>
 			<Button className='w-[250px] h-[60px]' onClick={handleOnlineGame}>
 				{/* {loading && <Loader2 className='animate-spin' />} */}
 				Играть по сети
