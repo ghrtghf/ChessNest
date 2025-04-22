@@ -1,10 +1,11 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 
 import { Google } from '@/shared/assets/svg/google'
+import { PAGES } from '@/shared/constants'
 import { Button } from '@/shared/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
@@ -12,7 +13,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useLoginMutation } from './hooks/useLoginMutation'
 import { LoginSchema, type TypeLoginSchema } from './model'
-import { PAGES } from '@/shared/constants'
 
 export function LoginForm() {
 	const form = useForm<TypeLoginSchema>({
@@ -78,7 +78,7 @@ export function LoginForm() {
 					</div>
 				</form>
 			</Form>
-			<Button className='w-full' disabled={isLoadingLogin} variant='outline'>
+			<Button className='w-full' disabled={isLoadingLogin} variant='outline' onClick={() => signIn('google')}>
 				<Google />
 				Войти с помощью Google
 			</Button>

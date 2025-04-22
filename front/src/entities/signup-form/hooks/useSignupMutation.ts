@@ -30,8 +30,8 @@ export function useSignupMutation() {
 				console.log(data)
 
 				Cookies.set('token', data?.data?.access_token, {
-					expires: 7,
-					sameSite: 'Strict'
+					expires: 30,
+					sameSite: 'Lax'
 				})
 
 				toast.success('Успешная регистрация')

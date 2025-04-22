@@ -11,11 +11,11 @@ export function useLoginMutation() {
 	const { mutate: login, isLoading: isLoadingLogin } = useMutation({
 		mutationKey: ['login user'],
 		mutationFn: async ({ values }: { values: TypeLoginSchema }) => {
-			const response = await fetch(`http://localhost:8000/api/login`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Origin: 'http://localhost:3000'
+					Origin: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`
 				},
 				body: JSON.stringify(values)
 			})
@@ -28,8 +28,8 @@ export function useLoginMutation() {
 				router.push('/home')
 				console.log(data)
 				Cookies.set('token', data?.data?.access_token, {
-					expires: 7,
-					sameSite: 'Strict'
+					expires: 30,
+					sameSite: 'Lax'
 				})
 
 				toast.success('Успешная авторизация')

@@ -19,11 +19,6 @@ import {
 import { NavMain, NavSecondary, NavUser } from './ui'
 
 const data = {
-	user: {
-		name: 'shadcn',
-		email: 'm@example.com',
-		avatar: '/avatars/shadcn.jpg'
-	},
 	navMain: [
 		{
 			title: 'Главная',
@@ -69,7 +64,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
 			<NavSecondary className='mt-auto' items={data.navSecondary} />
 		</SidebarContent>
 		<SidebarFooter>
-			<NavUser user={data.user} />
+			<NavUser />
 		</SidebarFooter>
 	</Sidebar>
 )
