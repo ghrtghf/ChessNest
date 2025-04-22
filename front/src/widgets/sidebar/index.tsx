@@ -16,7 +16,7 @@ import {
 	SidebarMenuItem
 } from '@/shared/ui/sidebar'
 
-import { NavMain, NavSecondary } from './ui'
+import { NavMain, NavSecondary, NavUser } from './ui'
 
 const data = {
 	user: {
@@ -50,26 +50,26 @@ const data = {
 	]
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	return (
-		<Sidebar collapsible='offcanvas' {...props}>
-			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton className='data-[slot=sidebar-menu-button]:!p-1.5' asChild>
-							<Link href={PAGES.home}>
-								<Logo />
-								<span className='text-base font-semibold'>Knight.com</span>
-							</Link>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarHeader>
-			<SidebarContent>
-				<NavMain items={data.navMain} />
-				<NavSecondary className='mt-auto' items={data.navSecondary} />
-			</SidebarContent>
-			<SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
-		</Sidebar>
-	)
-}
+export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
+	<Sidebar collapsible='offcanvas' {...props}>
+		<SidebarHeader>
+			<SidebarMenu>
+				<SidebarMenuItem>
+					<SidebarMenuButton className='data-[slot=sidebar-menu-button]:!p-1.5' asChild>
+						<Link href={PAGES.home}>
+							<Logo />
+							<span className='text-base font-semibold'>Knight.com</span>
+						</Link>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			</SidebarMenu>
+		</SidebarHeader>
+		<SidebarContent>
+			<NavMain items={data.navMain} />
+			<NavSecondary className='mt-auto' items={data.navSecondary} />
+		</SidebarContent>
+		<SidebarFooter>
+			<NavUser user={data.user} />
+		</SidebarFooter>
+	</Sidebar>
+)

@@ -5,5 +5,6 @@ export const PAGES = {
 	stats: '/stats',
 	settings: '/settings',
 	search: '/search',
-	signup: '/signup'
+	signup: '/signup',
+	signupForm: '/signup/form'
 } as const

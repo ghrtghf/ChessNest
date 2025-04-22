@@ -11,11 +11,11 @@ export function useSignupMutation() {
 	const { mutate: signup, isLoading: isLoadingSignup } = useMutation({
 		mutationKey: ['signup user'],
 		mutationFn: async ({ values }: { values: TypeSignupSchema }) => {
-			const response = await fetch(`http://localhost:8000/api/register`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Origin: 'http://localhost:3000'
+					Origin: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`
 				},
 				body: JSON.stringify(values)
 			})
