@@ -1,13 +1,12 @@
-import { CSSProperties } from 'react'
+// eslint-disable-next-line simple-import-sort/imports
+import type { CSSProperties } from 'react'
+import { X } from 'lucide-react'
 
 import { STATUS_GAME } from '@/shared/constants/status'
+import { copyPosition } from '@/shared/helpers'
 import { useGame, usePopup } from '@/shared/store'
 
 import './popup.css'
-
-import { X } from 'lucide-react'
-
-import { copyPosition } from '@/shared/helpers'
 
 export const PromotionBox = () => {
 	const statusGame = useGame((state) => state.status)

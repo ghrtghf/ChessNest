@@ -1,3 +1,4 @@
+import { PRESETS } from '@/shared/constants'
 import { letters, numbers } from '@/shared/helpers'
 import { getKingPosition, isPlayerInCheck } from '@/shared/helpers/moves'
 import { useGame } from '@/shared/store'
@@ -8,8 +9,9 @@ export const GridTiles = () => {
 	const turn = useGame((stateGame) => stateGame.turn)
 
 	const tileSize = useCustomBoard((stateGame) => stateGame.tileSize)
-	const colorDarkTile = useCustomBoard((stateGame) => stateGame.colorDarkTile)
-	const colorLightTile = useCustomBoard((stateGame) => stateGame.colorLightTile)
+	// const colorDarkTile = useCustomBoard((stateGame) => stateGame.colorDarkTile)
+	// const colorLightTile = useCustomBoard((stateGame) => stateGame.colorLightTile)
+	const selectedTheme = useCustomBoard((stateGame) => stateGame.selectedTheme)
 
 	const position = currentPosition[currentPosition.length - 1]
 
@@ -39,7 +41,11 @@ export const GridTiles = () => {
 				letters.map((letter, x) => {
 					const row = 7 - y
 					const isDark = (row + x) % 2 === 0
-					const bgColor = isDark ? colorDarkTile : colorLightTile
+					// const bgColor = isDark ? colorDarkTile : colorLightTile
+					const bgColor = isDark
+						? PRESETS.find((p) => p.id === selectedTheme.board)?.dark
+						: PRESETS.find((p) => p.id === selectedTheme.board)?.light
+
 					const isChecked = checkTile && checkTile[0] === row && checkTile[1] === x
 
 					return (

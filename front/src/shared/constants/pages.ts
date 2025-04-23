@@ -3,7 +3,8 @@ export const PAGES = {
 	game: '/game',
 	login: '/login',
 	stats: '/stats',
-	settings: '/settings',
+	profile: '/settings/profile',
+	settings: '/settings/board',
 	search: '/search',
 	signup: '/signup',
 	signupForm: '/signup/form'

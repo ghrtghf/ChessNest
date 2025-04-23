@@ -18,6 +18,12 @@ interface Move {
 	y: number
 }
 
+const audio = new Audio('/sounds/arthas/1.mp3')
+
+audio.preload = 'auto'
+audio.volume = 0.2
+audio.load()
+
 export const changePosition = (event: MouseEvent) => {
 	const { currentPosition, candidatesMoves, castleDirection, turn } = useGame.getState()
 	const { refPiece, refPieces } = usePiece.getState()
@@ -34,7 +40,8 @@ export const changePosition = (event: MouseEvent) => {
 		const currentPositionY = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][0]
 		const currentPositionX = classList.find((cls) => /^p-\d+$/.test(cls))!.split('-')[1][1]
 
-		if ((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)) {
+		// if ((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0))
+		if ((piece === 'wp' && x === 7) || (piece === 'bp' && x === 7)) {
 			// Проверка на превращение пешки на конце доски
 			usePopup.setState({
 				promotingSquare: { piece, x, y, currentPositionX: Number(currentPositionX), currentPositionY: Number(currentPositionY) }
@@ -102,6 +109,7 @@ export const changePosition = (event: MouseEvent) => {
 			]
 
 			console.log('@position', updatedPositions)
+			audio.play()
 
 			// const { websocket } = useWebsocket.getState()
 

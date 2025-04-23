@@ -16,14 +16,6 @@ interface Game {
 	setStatus: (status: 'black_wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white_wins') => void
 }
 
-function flipBoard(board: string[][]) {
-	// Сначала переворачиваем порядок строк, затем в каждой строке — порядок столбцов
-	return board
-		.slice()
-		.reverse()
-		.map((row) => row.slice().reverse())
-}
-
 export const useGame = create<Game>((set) => ({
 	currentPosition: [initialPosition('w')],
 	setNewCurrentPosition: (newPosition) =>

@@ -11,6 +11,23 @@ import { changePosition, letters, numbers } from '@/shared/helpers'
 import { useHighlightPiece, usePiece } from '@/shared/store'
 import { useCustomBoard } from '@/shared/store/custom-board'
 
+// export function useMoveSound() {
+// 	const audioRef = useRef<HTMLAudioElement | null>(null)
+
+// 	useEffect(() => {
+// 		audioRef.current = getMoveAudio()
+// 	}, [])
+
+// 	const play = () => {
+// 		audioRef.current?.currentTime = 0
+// 		audioRef.current?.play()
+// 	}
+
+// 	return { play }
+// }
+
+const audio = new Audio('/sounds/arthas/1.mp3')
+
 export const Board = () => {
 	const highlightPiece = useHighlightPiece((state) => state.highlightPiece)
 

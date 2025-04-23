@@ -26,7 +26,6 @@ export const Pieces = () => {
 		<>
 			{attackingMoves &&
 				attackingMoves.map(([y, x]) => (
-					// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
 					<div
 						className={`attacking p-${x}${y}`}
 						key={`attacking-${y}-${x}`}
@@ -35,7 +34,6 @@ export const Pieces = () => {
 				))}
 			{hintMoves &&
 				hintMoves.map(([y, x]) => (
-					// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
 					<div
 						className={`hint p-${x}${y}`}
 						key={`hint-${y}-${x}`}
