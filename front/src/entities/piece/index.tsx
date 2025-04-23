@@ -37,7 +37,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 				letter,
 				castleDirection: castleDirection[turn]
 			})
-			console.log('@', 'hello', candidateMoves)
+			// console.log('@', 'hello', candidateMoves)
 			setCandidatesMoves(candidateMoves || [])
 		} else {
 			setCandidatesMoves([])

@@ -3,16 +3,16 @@ import { useCustomBoard } from '@/shared/store/custom-board'
 import { cn } from '@/shared/utils/cn'
 
 export const Numbers = ({ numbers }: { numbers: number[] }) => {
-	const myColor = useGame((state) => state.myColor)
+	const turn = useGame((state) => state.turn)
 
 	const tileSize = useCustomBoard((state) => state.tileSize)
 	const colorLightTile = useCustomBoard((state) => state.colorLightTile)
 	const colorDarkTile = useCustomBoard((state) => state.colorDarkTile)
 
 	const textSizeClass = Number(tileSize) >= 90 ? 'text-2xl' : 'text-1xl'
-	const padding = Number(tileSize) >= 90 ? 'pb-14' : 'pb-12'
+	const padding = Number(tileSize) >= 90 ? 'pb-14' : 'pb-11'
 
-	const displayNumbers = myColor === 'b' ? [...numbers].reverse() : numbers
+	const displayNumbers = turn === 'b' ? [...numbers].reverse() : numbers
 
 	return (
 		<div className='absolute top-0 left-0 h-full justify-around flex flex-col'>

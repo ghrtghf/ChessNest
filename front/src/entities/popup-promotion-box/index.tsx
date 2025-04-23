@@ -1,25 +1,27 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-// eslint-disable-next-line simple-import-sort/imports
-import type { CSSProperties } from 'react'
-import { X } from 'lucide-react'
+import { CSSProperties } from 'react'
 
 import { STATUS_GAME } from '@/shared/constants/status'
-import { copyPosition } from '@/shared/helpers'
 import { useGame, usePopup } from '@/shared/store'
 
+import './popup.css'
+
+import { X } from 'lucide-react'
+
+import { copyPosition } from '@/shared/helpers'
+
 export const PromotionBox = () => {
+	const statusGame = useGame((state) => state.status)
 	const setStatus = useGame((state) => state.setStatus)
 	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
 	const setNewCurrentPosition = useGame((state) => state.setNewCurrentPosition)
-
 	const currentPosition = useGame((state) => state.currentPosition)
+
 	const promotionSquare = usePopup((state) => state.promotingSquare)
+
+	if (statusGame === STATUS_GAME.is_coming || !promotionSquare) return null
 
 	const options = ['q', 'r', 'b', 'n']
 	const color = promotionSquare?.piece === 'wp' ? 'w' : 'b'
-
-	if (!promotionSquare) return null
 
 	const promotionDirection = promotionSquare.x === 7 ? 'top' : 'bottom'
 
@@ -65,12 +67,14 @@ export const PromotionBox = () => {
 	}
 
 	return (
-		<div className={`popup__inner ${promotionDirection}`} style={getPromotionBoxPosition()}>
-			{options.map((option) => (
-				<div className={`popup__piece ${color}${option}`} key={option} onClick={() => changePiece(option)} />
-			))}
-			<div className='popup__cancel' onClick={() => setStatus(STATUS_GAME.is_coming)}>
-				<X color='#8b8987' />
+		<div className='popup'>
+			<div className={`popup__inner ${promotionDirection}`} style={getPromotionBoxPosition()}>
+				{options.map((option) => (
+					<div className={`popup__piece ${color}${option}`} key={option} onClick={() => changePiece(option)} />
+				))}
+				<div className='popup__cancel' onClick={() => setStatus(STATUS_GAME.is_coming)}>
+					<X color='#8b8987' />
+				</div>
 			</div>
 		</div>
 	)

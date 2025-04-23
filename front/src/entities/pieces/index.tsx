@@ -5,12 +5,22 @@ import { useGame } from '@/shared/store'
 
 import { Piece } from '../piece'
 
+// function flipBoard(board: string[][]) {
+// 	// Сначала переворачиваем порядок строк, затем в каждой строке — порядок столбцов
+// 	return board
+// 		.slice()
+// 		.reverse()
+// 		.map((row) => row.slice().reverse())
+// }
+
 export const Pieces = () => {
 	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
 	const candidatesMoves = useGame((stateGame) => stateGame.candidatesMoves)
 
 	const attackingMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] !== '')
 	const hintMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] === '')
+
+	console.log('@currentPosition', currentPosition)
 
 	return (
 		<>

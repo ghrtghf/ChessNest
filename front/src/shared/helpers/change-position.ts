@@ -1,6 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { STATUS_GAME } from '../constants/status'
-import { useGame, usePiece, usePopup } from '../store'
+import { useGame, useHighlightPiece, usePiece, usePopup } from '../store'
 import { useWebsocket } from '../store/websocket'
 
 import { calculateCoords } from './calculate-coords'
@@ -93,7 +93,15 @@ export const changePosition = (event: MouseEvent) => {
 			// turn: positions.turn === 'w' ? 'b' : 'w'
 			// const colorPosition = positions.myColor === 'w' ? newPosition : newPosition.reverse()
 
-			const updatedPositions = [...positions.currentPosition, newPosition]
+			const updatedPositions = [
+				...positions.currentPosition,
+				newPosition
+					.slice()
+					.reverse()
+					.map((row) => row.slice().reverse())
+			]
+
+			console.log('@position', updatedPositions)
 
 			// const { websocket } = useWebsocket.getState()
 
@@ -107,6 +115,9 @@ export const changePosition = (event: MouseEvent) => {
 				turn: positions.turn === 'w' ? 'b' : 'w'
 			}
 		})
+		// useGame.setState((position) => {
+		// 	return position.setSwitchColorPosition()
+		// })
 
 		if (insufficientMaterial(newPosition)) {
 			useGame.setState({ status: STATUS_GAME.stalemate })
@@ -119,6 +130,9 @@ export const changePosition = (event: MouseEvent) => {
 		) {
 			useGame.setState({ status: piece?.startsWith('b') ? STATUS_GAME.black : STATUS_GAME.white })
 		}
+
+		useHighlightPiece.setState({ highlightPiece: '' })
+		refPiece!.style.removeProperty('transform')
 	} else {
 		refPiece!.style.removeProperty('transform')
 	}

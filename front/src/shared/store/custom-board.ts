@@ -10,7 +10,8 @@ interface CustomBoard {
 }
 
 export const useCustomBoard = create<CustomBoard>((set) => ({
-	tileSize: '78',
+	// 70
+	tileSize: '70',
 	colorLightTile: '#ecd4b1',
 	colorDarkTile: '#b68565',
 	setColorDarkTile: (colorDarkTile) => set({ colorDarkTile }),

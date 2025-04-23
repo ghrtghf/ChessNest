@@ -1,6 +1,6 @@
 export const PAGES = {
-	home: '/',
-	game: '/game/:id',
+	home: '/home',
+	game: '/game',
 	login: '/login',
 	stats: '/stats',
 	settings: '/settings',
