@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import axios from 'axios'
 
 import type { TypeSignupSchema } from '../model'
 
@@ -11,15 +12,15 @@ export function useSignupMutation() {
 	const { mutate: signup, isLoading: isLoadingSignup } = useMutation({
 		mutationKey: ['signup user'],
 		mutationFn: async ({ values }: { values: TypeSignupSchema }) => {
-			const response = await fetch(`http://localhost:8000/api/register`, {
+			const response = await axios(`http://localhost:8000/api/register`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					Origin: 'http://localhost:3000'
 				},
-				body: JSON.stringify(values)
+				data: JSON.stringify(values)
 			})
-			return response.json()
+			return response.data
 		},
 		onSuccess(data: any) {
 			if (data.message) {

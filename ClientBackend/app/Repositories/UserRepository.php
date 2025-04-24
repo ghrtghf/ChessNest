@@ -15,7 +15,7 @@ class UserRepository extends BaseRepository
 
     public function find($nickname)
     {
-        return $this->model->where('nickname', $nickname)->first();
+        return $this->model->where('username', $nickname)->first();
     }
 
     public function findOnEmail($email)

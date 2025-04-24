@@ -8,43 +8,37 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// Структура клиента
 type Client struct {
 	conn   *websocket.Conn
 	gameId string
-	color  string // "white" или "black"
+	color  string
 }
 
-// Глобальная карта: gameId -> список клиентов
 var (
 	clients   = make(map[string][]*Client)
 	clientsMu sync.Mutex
 )
 
-// Настройка WebSocket
+
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // Разрешаем подключение отовсюду
+		return true 
 	},
 }
 
-// Основной обработчик WebSocket-подключений
 func handleWS(w http.ResponseWriter, r *http.Request) {
-	// Получаем ID игры из query-параметра
 	gameId := r.URL.Query().Get("gameId")
 	if gameId == "" {
 		http.Error(w, "gameId is required", http.StatusBadRequest)
 		return
 	}
 
-	// Обновляем соединение до WebSocket
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println("Ошибка апгрейда:", err)
 		return
 	}
 
-	// Определяем цвет игрока
 	clientsMu.Lock()
 	gameClients := clients[gameId]
 	var playerColor string
@@ -53,7 +47,6 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 	} else if len(gameClients) == 1 {
 		playerColor = "b"
 	} else {
-		// Если уже 2 игрока, закрываем соединение
 		conn.Close()
 		clientsMu.Unlock()
 		return
@@ -61,19 +54,17 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 
 	client := &Client{conn, gameId, playerColor}
 
-	// Добавляем клиента в список
+
 	clients[gameId] = append(clients[gameId], client)
 	
-	// Отправляем игроку его цвет
 	conn.WriteJSON(map[string]interface{}{
-		"type": "init",
-		"data": map[string]string{
-			"color": playerColor,
-			"id": gameId,
-		},
-	})
-	
-	// Если подключились оба игрока, уведомляем их
+    "type": "init",
+    "data": map[string]interface{}{
+        "color":  playerColor, 
+        "id":     gameId,      
+        "rating": 1200,        
+    },
+})
 	if len(clients[gameId]) == 2 {
 		for _, c := range clients[gameId] {
 			c.conn.WriteJSON(map[string]interface{}{
@@ -87,7 +78,6 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 	clientsMu.Unlock()
 
 	defer func() {
-		// Удаляем клиента при отключении
 		clientsMu.Lock()
 		defer clientsMu.Unlock()
 		conns := clients[gameId]
@@ -99,7 +89,6 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 		}
 		conn.Close()
 		
-		// Уведомляем оставшегося игрока о выходе соперника
 		if len(clients[gameId]) > 0 {
 			clients[gameId][0].conn.WriteJSON(map[string]interface{}{
 				"type": "opponent_disconnected",
@@ -120,7 +109,6 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 
 		var data interface{}
 		if message["type"] == "move" {
-			// Просто берём всё содержимое поля "position"
 			data = message["position"]
 		} else {
 			data = message["data"]

@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import axios from 'axios'
 
 import type { TypeLoginSchema } from '../model'
 
@@ -11,15 +12,15 @@ export function useLoginMutation() {
 	const { mutate: login, isLoading: isLoadingLogin } = useMutation({
 		mutationKey: ['login user'],
 		mutationFn: async ({ values }: { values: TypeLoginSchema }) => {
-			const response = await fetch(`http://localhost:8000/api/login`, {
+			const response = await axios(`http://localhost:8000/api/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					Origin: 'http://localhost:3000'
 				},
-				body: JSON.stringify(values)
+				data: values
 			})
-			return response.json()
+			return response.data
 		},
 		onSuccess(data: any) {
 			if (data.message) {
