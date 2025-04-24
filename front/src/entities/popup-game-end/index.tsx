@@ -1,8 +1,9 @@
 import { useLayoutEffect, useState } from 'react'
 import Image from 'next/image'
 
+import { PRESETS } from '@/shared/constants'
 import { STATUS_GAME } from '@/shared/constants/status'
-import { useGame } from '@/shared/store'
+import { useGame, useSelectTheme } from '@/shared/store'
 import { Button } from '@/shared/ui/button'
 import {
 	Dialog,
@@ -23,6 +24,8 @@ const statusMessage = {
 export const GameEnd = () => {
 	const statusGame = useGame((state) => state.status)
 	const setNewGame = useGame((state) => state.setNewGame)
+
+	const selectedTheme = useSelectTheme((stateGame) => stateGame.selectedTheme)
 
 	const [open, setOpen] = useState(true)
 
@@ -49,12 +52,36 @@ export const GameEnd = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<div className='flex items-center justify-center'>
-					{statusGame === 'black_wins' && <Image alt='bp' height={150} src='/pieces/default/bp.png' width={150} />}
-					{statusGame === 'white_wins' && <Image alt='wp' height={150} src='/pieces/default/wp.png' width={150} />}
+					{statusGame === 'black_wins' && (
+						<Image
+							alt='bp'
+							height={150}
+							src={`/custom/pieces/${PRESETS.find((p) => p.id === selectedTheme.figures)?.id}/bp.png`}
+							width={150}
+						/>
+					)}
+					{statusGame === 'white_wins' && (
+						<Image
+							alt='wp'
+							height={150}
+							src={`/custom/pieces/${PRESETS.find((p) => p.id === selectedTheme.figures)?.id}/wp.png`}
+							width={150}
+						/>
+					)}
 					{statusGame === 'stalemate' && (
 						<>
-							<Image alt='bp' height={150} src='/pieces/default/bp.png' width={150} />
-							<Image alt='wp' height={150} src='/pieces/default/wp.png' width={150} />
+							<Image
+								alt='bp'
+								height={150}
+								src={`/custom/pieces/${PRESETS.find((p) => p.id === selectedTheme.figures)?.id}/bp.png`}
+								width={150}
+							/>
+							<Image
+								alt='wp'
+								height={150}
+								src={`/custom/pieces/${PRESETS.find((p) => p.id === selectedTheme.figures)?.id}/bp.png`}
+								width={150}
+							/>
 						</>
 					)}
 				</div>

@@ -2,7 +2,10 @@
 
 import { LogOutIcon } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
+import { redirect, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
+import { PAGES } from '@/shared/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar'
 import {
 	DropdownMenu,
@@ -17,8 +20,13 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/s
 export const NavUser = () => {
 	const { data: session } = useSession()
 	const { isMobile } = useSidebar()
+	const router = useRouter()
 
-	console.log(session)
+	const exit = async () => {
+		await signOut({ redirect: false })
+		router.push(PAGES.login)
+		toast.success('Вы вышли из аккаунта')
+	}
 
 	return (
 		<SidebarMenu>
@@ -30,7 +38,7 @@ export const NavUser = () => {
 							size='lg'
 						>
 							<Avatar className='h-8 w-8 rounded-lg'>
-								<AvatarImage alt={session?.user?.name ?? ''} src={session?.user?.image ?? ''} />
+								<AvatarImage alt={session?.user?.name ?? ''} src={session?.user?.image ?? undefined} />
 								<AvatarFallback className='rounded-lg'>{session?.user?.name}</AvatarFallback>
 							</Avatar>
 							<div className='grid flex-1 text-left text-sm leading-tight'>
@@ -58,7 +66,7 @@ export const NavUser = () => {
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => signOut()}>
+						<DropdownMenuItem onClick={exit}>
 							<LogOutIcon />
 							Выйти
 						</DropdownMenuItem>

@@ -3,8 +3,10 @@
 import { useRef } from 'react'
 import type { MouseEvent } from 'react'
 
+import { PRESETS } from '@/shared/constants'
 import { getValidMoves } from '@/shared/helpers/moves'
-import { useGame, useHighlightPiece, usePiece } from '@/shared/store'
+import { useGame, useHighlightPiece, usePiece, useSelectTheme } from '@/shared/store'
+import { cn } from '@/shared/utils'
 
 export const Piece = ({ letter, number, piece }: { letter: number; number: number; piece: string }) => {
 	const setDragging = usePiece((state) => state.setDragging)
@@ -12,6 +14,7 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
 	const castleDirection = useGame((state) => state.castleDirection)
 
+	const selectedTheme = useSelectTheme((state) => state.selectedTheme)
 	const setHighlightPiece = useHighlightPiece((state) => state.setHighlightPiece)
 
 	// const myColor = useGame((stateWebsocket) => stateWebsocket.myColor)
@@ -51,7 +54,11 @@ export const Piece = ({ letter, number, piece }: { letter: number; number: numbe
 	}
 
 	return (
-		// eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-		<div className={`piece ${piece} p-${letter}${number}`} ref={refPiece} onClick={changeRefPiece} onMouseDown={onMouseDown} />
+		<div
+			className={cn(PRESETS.find((p) => p.id === selectedTheme.figures)?.id, `piece ${piece} p-${letter}${number}`)}
+			ref={refPiece}
+			onClick={changeRefPiece}
+			onMouseDown={onMouseDown}
+		/>
 	)
 }

@@ -27,6 +27,7 @@ export default function LayoutHome({ children }: { children: ReactNode }) {
 					src='/login_play.gif'
 					width={500}
 					priority
+					unoptimized={true}
 				/>
 			</div>
 		</div>

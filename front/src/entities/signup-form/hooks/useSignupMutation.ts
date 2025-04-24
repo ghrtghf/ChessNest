@@ -3,6 +3,8 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { toastMessageHandler } from '@/shared/utils'
+
 import type { TypeSignupSchema } from '../model'
 
 export function useSignupMutation() {
@@ -23,7 +25,7 @@ export function useSignupMutation() {
 		},
 		onSuccess(data: any) {
 			if (data.message) {
-				// toastMessageHandler(data)
+				toastMessageHandler(data)
 			} else {
 				router.push('/home')
 
@@ -38,9 +40,7 @@ export function useSignupMutation() {
 			}
 		},
 		onError(error: Error) {
-			// toastMessageHandler(error)
-			console.log(error)
-			toast.error(error.message)
+			toastMessageHandler(error)
 		}
 	})
 

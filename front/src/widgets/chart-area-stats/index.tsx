@@ -5,7 +5,8 @@ import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import { useIsMobile } from '@/shared/hooks/use-mobile'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/shared/ui/chart'
+import type { ChartConfig } from '@/shared/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/shared/ui/chart'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui/toggle-group'
 
@@ -155,34 +156,34 @@ export const ChartAreaStats = () => {
 				</CardDescription>
 				<div className='absolute right-4 top-4'>
 					<ToggleGroup
+						className='@[767px]/card:flex hidden'
 						type='single'
 						value={timeRange}
-						onValueChange={setTimeRange}
 						variant='outline'
-						className='@[767px]/card:flex hidden'
+						onValueChange={setTimeRange}
 					>
-						<ToggleGroupItem value='90d' className='h-8 px-2.5'>
+						<ToggleGroupItem className='h-8 px-2.5' value='90d'>
 							Последние 3 месяца
 						</ToggleGroupItem>
-						<ToggleGroupItem value='30d' className='h-8 px-2.5'>
+						<ToggleGroupItem className='h-8 px-2.5' value='30d'>
 							Последние 30 дней
 						</ToggleGroupItem>
-						<ToggleGroupItem value='7d' className='h-8 px-2.5'>
+						<ToggleGroupItem className='h-8 px-2.5' value='7d'>
 							Последние 7 дней
 						</ToggleGroupItem>
 					</ToggleGroup>
 					<Select value={timeRange} onValueChange={setTimeRange}>
-						<SelectTrigger className='@[767px]/card:hidden flex w-50' aria-label='Select a value'>
+						<SelectTrigger aria-label='Select a value' className='@[767px]/card:hidden flex w-50'>
 							<SelectValue placeholder='Last 3 months' />
 						</SelectTrigger>
 						<SelectContent className='rounded-xl'>
-							<SelectItem value='90d' className='rounded-lg'>
+							<SelectItem className='rounded-lg' value='90d'>
 								Последние 3 месяца
 							</SelectItem>
-							<SelectItem value='30d' className='rounded-lg'>
+							<SelectItem className='rounded-lg' value='30d'>
 								Последние 30 дней
 							</SelectItem>
-							<SelectItem value='7d' className='rounded-lg'>
+							<SelectItem className='rounded-lg' value='7d'>
 								Последние 7 дней
 							</SelectItem>
 						</SelectContent>
@@ -190,10 +191,10 @@ export const ChartAreaStats = () => {
 				</div>
 			</CardHeader>
 			<CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
-				<ChartContainer config={chartConfig} className='aspect-auto h-[250px] w-full'>
+				<ChartContainer className='aspect-auto h-[250px] w-full' config={chartConfig}>
 					<AreaChart data={filteredData}>
 						<defs>
-							<linearGradient id='fillMyOwn' x1='0' y1='0' x2='0' y2='1'>
+							<linearGradient id='fillMyOwn' x1='0' x2='0' y1='0' y2='1'>
 								<stop offset='5%' stopColor='var(--color-my_own)' stopOpacity={1.0} />
 								<stop offset='95%' stopColor='var(--color-my_own)' stopOpacity={0.1} />
 							</linearGradient>
@@ -204,11 +205,11 @@ export const ChartAreaStats = () => {
 						</defs>
 						<CartesianGrid vertical={false} />
 						<XAxis
-							dataKey='date'
-							tickLine={false}
 							axisLine={false}
-							tickMargin={8}
+							dataKey='date'
 							minTickGap={32}
+							tickLine={false}
+							tickMargin={8}
 							tickFormatter={(value) => {
 								const date = new Date(value)
 								return date.toLocaleDateString('ru-RU', {
@@ -218,21 +219,21 @@ export const ChartAreaStats = () => {
 							}}
 						/>
 						<ChartTooltip
-							cursor={false}
 							content={
 								<ChartTooltipContent
-									labelFormatter={(value) => {
-										return new Date(value).toLocaleDateString('ru-RU', {
+									indicator='dot'
+									labelFormatter={(value) =>
+										new Date(value).toLocaleDateString('ru-RU', {
 											month: 'short',
 											day: 'numeric'
 										})
-									}}
-									indicator='dot'
+									}
 								/>
 							}
+							cursor={false}
 						/>
 						{/* <Area dataKey='mobile' type='natural' fill='url(#fillMobile)' stroke='var(--color-mobile)' stackId='a' /> */}
-						<Area dataKey='my_own' type='natural' fill='url(#fillMyOwn)' stroke='var(--color-my_own)' stackId='a' />
+						<Area dataKey='my_own' fill='url(#fillMyOwn)' stackId='a' type='natural' stroke='var(--color-my_own)' />
 					</AreaChart>
 				</ChartContainer>
 			</CardContent>

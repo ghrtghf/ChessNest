@@ -80,30 +80,60 @@
 	order: 4;
 }
 
+/* classic */
+
 .popup__piece.bq {
-	background-image: url('/pieces/default/bq.png');
+	background-image: url('/custom/pieces/classic/bq.png');
 }
 .popup__piece.br {
-	background-image: url('/pieces/default/br.png');
+	background-image: url('/custom/pieces/classic/br.png');
 }
 .popup__piece.bb {
-	background-image: url('/pieces/default/bb.png');
+	background-image: url('/custom/pieces/classic/bb.png');
 }
 .popup__piece.bn {
-	background-image: url('/pieces/default/bn.png');
+	background-image: url('/custom/pieces/classic/bn.png');
 }
 
 .popup__piece.wq {
-	background-image: url('/pieces/default/wq.png');
+	background-image: url('/custom/pieces/classic/wq.png');
 }
 .popup__piece.wr {
-	background-image: url('/pieces/default/wr.png');
+	background-image: url('/custom/pieces/classic/wr.png');
 }
 .popup__piece.wb {
-	background-image: url('/pieces/default/wb.png');
+	background-image: url('/custom/pieces/classic/wb.png');
 }
 .popup__piece.wn {
-	background-image: url('/pieces/default/wn.png');
+	background-image: url('/custom/pieces/classic/wn.png');
+}
+
+/* stone */
+
+.stone.popup__piece.bq {
+	background-image: url('/custom/pieces/stone/bq.png');
+}
+.stone.popup__piece.br {
+	background-image: url('/custom/pieces/stone/br.png');
+}
+.stone.popup__piece.bb {
+	background-image: url('/custom/pieces/stone/bb.png');
+}
+.stone.popup__piece.bn {
+	background-image: url('/custom/pieces/stone/bn.png');
+}
+
+.stone.popup__piece.wq {
+	background-image: url('/custom/pieces/stone/wq.png');
+}
+.stone.popup__piece.wr {
+	background-image: url('/custom/pieces/stone/wr.png');
+}
+.stone.popup__piece.wb {
+	background-image: url('/custom/pieces/stone/wb.png');
+}
+.stone.popup__piece.wn {
+	background-image: url('/custom/pieces/stone/wn.png');
 }
 
 .popup__piece:hover {

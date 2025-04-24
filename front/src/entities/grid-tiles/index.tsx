@@ -2,7 +2,7 @@ import { PRESETS } from '@/shared/constants'
 import { letters, numbers } from '@/shared/helpers'
 import { getKingPosition, isPlayerInCheck } from '@/shared/helpers/moves'
 import { useGame } from '@/shared/store'
-import { useCustomBoard } from '@/shared/store/custom-board'
+import { useCustomBoard, useSelectTheme } from '@/shared/store/custom-board'
 
 export const GridTiles = () => {
 	const currentPosition = useGame((stateGame) => stateGame.currentPosition)
@@ -11,7 +11,7 @@ export const GridTiles = () => {
 	const tileSize = useCustomBoard((stateGame) => stateGame.tileSize)
 	// const colorDarkTile = useCustomBoard((stateGame) => stateGame.colorDarkTile)
 	// const colorLightTile = useCustomBoard((stateGame) => stateGame.colorLightTile)
-	const selectedTheme = useCustomBoard((stateGame) => stateGame.selectedTheme)
+	const selectedTheme = useSelectTheme((stateGame) => stateGame.selectedTheme)
 
 	const position = currentPosition[currentPosition.length - 1]
 

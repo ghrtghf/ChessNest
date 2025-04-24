@@ -26,8 +26,6 @@ import { useCustomBoard } from '@/shared/store/custom-board'
 // 	return { play }
 // }
 
-const audio = new Audio('/sounds/arthas/1.mp3')
-
 export const Board = () => {
 	const highlightPiece = useHighlightPiece((state) => state.highlightPiece)
 

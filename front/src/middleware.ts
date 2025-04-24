@@ -1,14 +1,10 @@
-import { NextResponse, type NextRequest } from 'next/server'
-
-// export { auth as middleware } from '@/auth'
-
 // eslint-disable-next-line simple-import-sort/imports
+import { NextResponse, type NextRequest } from 'next/server'
 
 export default function middleware(request: NextRequest) {
 	const { url, cookies } = request
 
 	const session = cookies.get('token')?.value
-	// const session = false
 
 	const isAuthPage = url.includes('/login') || url.includes('/signup')
 
@@ -30,5 +26,16 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/login', '/signup', '/home', '/', '/signup/form', '/game:id']
+	matcher: [
+		'/login',
+		'/signup',
+		'/home',
+		'/',
+		'/signup/form',
+		'/game/:id',
+		'/settings/profile',
+		'/settings/board',
+		'/search',
+		'/stats'
+	]
 }

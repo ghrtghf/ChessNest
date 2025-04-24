@@ -1,4 +1,3 @@
-export * from './calculate-coords'
 export * from './change-position'
 export * from './copy-position'
 export * from './initial-position'

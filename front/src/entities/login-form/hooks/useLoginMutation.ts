@@ -3,6 +3,8 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { toastMessageHandler } from '@/shared/utils'
+
 import type { TypeLoginSchema } from '../model'
 
 export function useLoginMutation() {
@@ -23,10 +25,12 @@ export function useLoginMutation() {
 		},
 		onSuccess(data: any) {
 			if (data.message) {
-				// toastMessageHandler(data)
+				toastMessageHandler(data)
 			} else {
 				router.push('/home')
+
 				console.log(data)
+
 				Cookies.set('token', data?.data?.access_token, {
 					expires: 30,
 					sameSite: 'Lax'
@@ -36,8 +40,7 @@ export function useLoginMutation() {
 			}
 		},
 		onError(error: Error) {
-			// toastMessageHandler(error)
-			toast.error(error.message)
+			toastMessageHandler(error)
 		}
 	})
 

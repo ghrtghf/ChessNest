@@ -5,14 +5,6 @@ import { useGame } from '@/shared/store'
 
 import { Piece } from '../piece'
 
-// function flipBoard(board: string[][]) {
-// 	// Сначала переворачиваем порядок строк, затем в каждой строке — порядок столбцов
-// 	return board
-// 		.slice()
-// 		.reverse()
-// 		.map((row) => row.slice().reverse())
-// }
-
 export const Pieces = () => {
 	const currentPosition = useGame((stateGame) => stateGame.currentPosition[stateGame.currentPosition.length - 1])
 	const candidatesMoves = useGame((stateGame) => stateGame.candidatesMoves)
@@ -20,7 +12,7 @@ export const Pieces = () => {
 	const attackingMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] !== '')
 	const hintMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] === '')
 
-	console.log('@currentPosition', currentPosition)
+	// console.log('@currentPosition', currentPosition)
 
 	return (
 		<>
@@ -41,11 +33,9 @@ export const Pieces = () => {
 					/>
 				))}
 			{currentPosition.map((row, number) =>
-				row.map((_, letter: number) =>
-					// eslint-disable-next-line style/multiline-ternary
-					currentPosition[number][letter] ? (
-						<Piece key={`${number}-${letter}`} letter={letter} number={number} piece={currentPosition[number][letter]} />
-					) : null
+				row.map(
+					(fill, letter: number) =>
+						fill && <Piece key={`${number}-${letter}`} letter={letter} number={number} piece={currentPosition[number][letter]} />
 				)
 			)}
 		</>

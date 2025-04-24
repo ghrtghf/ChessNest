@@ -15,7 +15,7 @@ export const getPawnMoves = ({ position, piece, number, letter }: Moves) => {
 		moves.push([number + dir, letter])
 	}
 
-	console.log('@', 'paws', moves)
+	// console.log('@', 'paws', moves)
 	return moves
 }
 
@@ -38,7 +38,7 @@ export const getPawnCaptures = ({ position, prevPosition, piece, number, letter 
 	// EnPassant
 	// Если противник сделал движение на 2 клетки предыдущего хода
 	const enemyPawn = dir === 1 ? 'bp' : 'wp'
-	console.log(enemyPawn)
+	// console.log(enemyPawn)
 	// const enemyPawn = dir === 1 ? `${enemy}p` : `${enemy}p`
 	const adjacentletters = [letter - 1, letter + 1]
 	if (prevPosition) {

@@ -38,7 +38,7 @@ export const useGameOnline = create<GameOnline>((set) => ({
 				colorPosition = newPosition.slice().reverse()
 			}
 
-			console.log(positions.myColor, positions.turn)
+			// console.log(positions.myColor, positions.turn)
 
 			return {
 				currentPosition: [...positions.currentPosition, colorPosition!],

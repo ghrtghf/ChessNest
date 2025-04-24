@@ -71,41 +71,125 @@
 	cursor: grabbing;
 }
 
+/* preview classic  */
+
+.bb {
+	background-image: url('/custom/pieces/classic/bb.png');
+}
+.bq {
+	background-image: url('/custom/pieces/classic/bq.png');
+}
+.bp {
+	background-image: url('/custom/pieces/classic/bp.png');
+}
+
+.wk {
+	background-image: url('/custom/pieces/classic/wk.png');
+}
+.wr {
+	background-image: url('/custom/pieces/classic/wr.png');
+}
+.wn {
+	background-image: url('/custom/pieces/classic/wn.png');
+}
+
+/* preview stone  */
+
+.stone.bq {
+	background-image: url('/custom/pieces/stone/bq.png');
+}
+.stone.bb {
+	background-image: url('/custom/pieces/stone/bb.png');
+}
+.stone.bp {
+	background-image: url('/custom/pieces/stone/bp.png');
+}
+.stone.wk {
+	background-image: url('/custom/pieces/stone/wk.png');
+}
+.stone.wr {
+	background-image: url('/custom/pieces/stone/wr.png');
+}
+.stone.wn {
+	background-image: url('/custom/pieces/stone/wn.png');
+}
+
+/* classic */
+
 .piece.bk {
-	background-image: url('/pieces/default/bk.png');
+	background-image: url('/custom/pieces/classic/bk.png');
 }
 .piece.bq {
-	background-image: url('/pieces/default/bq.png');
+	background-image: url('/custom/pieces/classic/bq.png');
 }
 .piece.br {
-	background-image: url('/pieces/default/br.png');
+	background-image: url('/custom/pieces/classic/br.png');
 }
 .piece.bb {
-	background-image: url('/pieces/default/bb.png');
+	background-image: url('/custom/pieces/classic/bb.png');
 }
 .piece.bn {
-	background-image: url('/pieces/default/bn.png');
+	background-image: url('/custom/pieces/classic/bn.png');
 }
 .piece.bp {
-	background-image: url('/pieces/default/bp.png');
+	background-image: url('/custom/pieces/classic/bp.png');
 }
 .piece.wk {
-	background-image: url('/pieces/default/wk.png');
+	background-image: url('/custom/pieces/classic/wk.png');
 }
 .piece.wq {
-	background-image: url('/pieces/default/wq.png');
+	background-image: url('/custom/pieces/classic/wq.png');
 }
 .piece.wr {
-	background-image: url('/pieces/default/wr.png');
+	background-image: url('/custom/pieces/classic/wr.png');
 }
 .piece.wb {
-	background-image: url('/pieces/default/wb.png');
+	background-image: url('/custom/pieces/classic/wb.png');
 }
 .piece.wn {
-	background-image: url('/pieces/default/wn.png');
+	background-image: url('/custom/pieces/classic/wn.png');
 }
 .piece.wp {
-	background-image: url('/pieces/default/wp.png');
+	background-image: url('/custom/pieces/classic/wp.png');
+}
+
+/* stone */
+
+.stone.piece.bk {
+	background-image: url('/custom/pieces/stone/bk.png');
+}
+.stone.piece.bq {
+	background-image: url('/custom/pieces/stone/bq.png');
+}
+.stone.piece.br {
+	background-image: url('/custom/pieces/stone/br.png');
+}
+.stone.piece.bb {
+	background-image: url('/custom/pieces/stone/bb.png');
+}
+.stone.piece.bn {
+	background-image: url('/custom/pieces/stone/bn.png');
+}
+.stone.piece.bp {
+	background-image: url('/custom/pieces/stone/bp.png');
+}
+.stone.piece.wk {
+	background-image: url('/custom/pieces/stone/wk.png');
+}
+.stone.piece.wq {
+	background-image: url('/custom/pieces/stone/wq.png');
+}
+.stone.piece.wr {
+	background-image: url('/custom/pieces/stone/wr.png');
+}
+.stone.piece.wb {
+	background-image: url('/custom/pieces/stone/wb.png');
+}
+.stone.piece.wn {
+	background-image: url('/custom/pieces/stone/wn.png');
+}
+.stone.piece.wp {
+	background-image: url('/custom/pieces/stone/wp.png');
 }
 
 .p-07 {
