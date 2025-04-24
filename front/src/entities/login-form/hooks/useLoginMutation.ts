@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import axios from 'axios'
 
+import { toastMessageHandler } from '@/shared/utils'
+
 import type { TypeLoginSchema } from '../model'
 
 export function useLoginMutation() {
@@ -12,11 +14,11 @@ export function useLoginMutation() {
 	const { mutate: login, isLoading: isLoadingLogin } = useMutation({
 		mutationKey: ['login user'],
 		mutationFn: async ({ values }: { values: TypeLoginSchema }) => {
-			const response = await axios(`http://localhost:8000/api/login`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Origin: 'http://localhost:3000'
+					Origin: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`
 				},
 				data: values
 			})
@@ -24,21 +26,22 @@ export function useLoginMutation() {
 		},
 		onSuccess(data: any) {
 			if (data.message) {
-				// toastMessageHandler(data)
+				toastMessageHandler(data)
 			} else {
 				router.push('/home')
+
 				console.log(data)
+
 				Cookies.set('token', data?.data?.access_token, {
-					expires: 7,
-					sameSite: 'Strict'
+					expires: 30,
+					sameSite: 'Lax'
 				})
 
 				toast.success('Успешная авторизация')
 			}
 		},
 		onError(error: Error) {
-			// toastMessageHandler(error)
-			toast.error(error.message)
+			toastMessageHandler(error)
 		}
 	})
 

@@ -1,3 +1,6 @@
+export * from './custom-board'
 export * from './game'
+export * from './game-online'
 export * from './piece'
 export * from './popup'
+export * from './websocket'

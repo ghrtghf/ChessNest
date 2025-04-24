@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { v4 } from 'uuid'
 
+import { PAGES } from '@/shared/constants'
 import { useGame } from '@/shared/store'
 import { myColor, useWebsocket } from '@/shared/store/websocket'
 import { Button } from '@/shared/ui/button'
@@ -82,14 +84,14 @@ export default function Home() {
 	}
 
 	return (
-		<div className='flex flex-col items-center justify-center h-screen gap-6'>
+		<div className='flex flex-col items-center justify-center h-full gap-6'>
 			<Button className='w-[250px] h-[60px]' onClick={handleOnlineGame}>
 				{/* {loading && <Loader2 className='animate-spin' />} */}
 				Играть по сети
 			</Button>
-			<Button className='w-[250px] h-[60px]'>
+			<Button className='w-[250px] h-[60px]' asChild>
 				{/* {loading && <Loader2 className='animate-spin' />} */}
-				Играть на одном пк
+				<Link href={`${PAGES.game}/123`}>Играть на одном пк</Link>
 			</Button>
 		</div>
 	)

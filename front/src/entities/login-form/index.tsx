@@ -1,10 +1,12 @@
 'use client'
 
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 
+import { Google } from '@/shared/assets/svg/google'
+import { PAGES } from '@/shared/constants'
 import { Button } from '@/shared/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,7 +20,8 @@ export function LoginForm() {
 		defaultValues: {
 			email: '',
 			password: ''
-		}
+		},
+		mode: 'onChange'
 	})
 
 	const { login, isLoadingLogin } = useLoginMutation()
@@ -29,14 +32,16 @@ export function LoginForm() {
 	}
 
 	return (
-		<Card className='w-[400px]'>
-			<CardHeader className='space-y-2'>
-				<CardTitle>Войти</CardTitle>
-				<CardDescription>Чтобы войти на сайт введите ваш email и пароль</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Form {...form}>
-					<form className='grid gap-2 space-y-2' onSubmit={form.handleSubmit(onSubmit)}>
+		<>
+			<Form {...form}>
+				<form className='flex flex-col gap-6' onSubmit={form.handleSubmit(onSubmit)}>
+					<div className='flex flex-col items-center gap-2 text-center'>
+						<h1 className='text-2xl font-bold'>Войдите в свой аккаунт</h1>
+						<p className='text-balance text-sm text-muted-foreground'>
+							Введите свой адрес электронной почты ниже, чтобы войти в свою учетную запись
+						</p>
+					</div>
+					<div className='grid gap-6'>
 						<FormField
 							name='email'
 							render={({ field }) => (
@@ -56,7 +61,7 @@ export function LoginForm() {
 								<FormItem>
 									<FormLabel>Пароль</FormLabel>
 									<FormControl>
-										<Input disabled={isLoadingLogin} type='password' placeholder='******' {...field} />
+										<Input disabled={isLoadingLogin} type='password' placeholder='********' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -67,19 +72,23 @@ export function LoginForm() {
 							{isLoadingLogin && <div className='mr-2 h-4 w-4 animate-spin rounded-full border-2 border-x-white' />}
 							Войти в аккаунт
 						</Button>
-						{/* <Button variant='outline' className='w-full' disabled={isLoadingLogin}>
-							<Google className='fill-black dark:fill-white' />
-							Войти с помощью Google
-						</Button> */}
-					</form>
-				</Form>
-				<div className='mt-4 text-center text-sm'>
-					Нету аккаунта?{' '}
-					<Link className='underline underline-offset-4' href='/signup'>
-						Зарегистрироваться
-					</Link>
-				</div>
-			</CardContent>
-		</Card>
+						<div className='relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border mb-6'>
+							<span className='relative z-10 bg-background px-2 text-muted-foreground'>Или продолжить</span>
+						</div>
+					</div>
+				</form>
+			</Form>
+			<Button className='w-full' disabled={isLoadingLogin} variant='outline' onClick={() => signIn('google')}>
+				<Google />
+				Войти с помощью Google
+			</Button>
+			<div className='mt-4 text-center text-sm'>
+				{/* eslint-disable-next-line style/jsx-one-expression-per-line */}
+				Нету аккаунта?{' '}
+				<Link className='underline underline-offset-4' href={PAGES.signup}>
+					Зарегистрироваться
+				</Link>
+			</div>
+		</>
 	)
 }

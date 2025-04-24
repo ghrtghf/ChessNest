@@ -9,6 +9,10 @@
 		"paths": {
 			"@/app/*": ["./src/app/*"],
 			"@/shared/*": ["./src/shared/*"],
+			"@/auth": ["./src/auth"],
+			"@/shared/helpers/*": ["./src/shared/helpers/*"],
+			"@/shared/store/*": ["./src/shared/store/*"],
+			"@/shared/ui/*": ["./src/shared/ui/*"],
 			"@/widgets/*": ["./src/widgets/*"],
 			"@/entities/*": ["./src/entities/*"]
 		},

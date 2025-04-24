@@ -3,8 +3,8 @@ import { Ubuntu } from 'next/font/google'
 
 import { MainProvider } from '@/shared/providers'
 
-import '../shared/styles/globals.css'
-import '../shared/styles/pieces.css'
+import '../shared/assets/styles/globals.css'
+import '../shared/assets/styles/pieces.css'
 
 const ubuntu = Ubuntu({
 	variable: '--font-ubuntu',

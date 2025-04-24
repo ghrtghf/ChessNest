@@ -3,75 +3,56 @@ import { create } from 'zustand'
 import { STATUS_GAME } from '../constants/status'
 import { initialPosition } from '../helpers/initial-position'
 
-import { useWebsocket } from './websocket'
-
 interface Game {
 	candidatesMoves: [number, number][]
 	castleDirection: { w: 'both' | 'left' | 'none' | 'right'; b: 'both' | 'left' | 'none' | 'right' }
 	currentPosition: ReturnType<typeof initialPosition>[]
-	myColor: any
-	status: 'black wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white wins'
+	noteMoves: string[]
+	status: 'black_wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white_wins'
 	turn: 'b' | 'w'
 	setCandidatesMoves: (moves: [number, number][]) => void
 	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'none' | 'right') => void
-	setMyColor: (state: any) => void
 	setNewCurrentPosition: (newPosition: ReturnType<typeof initialPosition>) => void
 	setNewGame: () => void
-	setReceivedPosition: (newPosition: string[][]) => void
-	setStatus: (status: 'black wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white wins') => void
+	setNoteMoves: (moves: string) => void
+	setStatus: (status: 'black_wins' | 'is_coming' | 'promoting' | 'stalemate' | 'white_wins') => void
 }
 
+export const GAME_INIT = {
+	currentPosition: [initialPosition('w')],
+	noteMoves: [],
+	turn: 'w',
+	status: STATUS_GAME.is_coming,
+	castleDirection: {
+		w: 'both',
+		b: 'both'
+	},
+	candidatesMoves: []
+} satisfies Partial<Game>
+
 export const useGame = create<Game>((set) => ({
-	currentPosition: [],
-	setReceivedPosition: (newPosition) =>
-		set((positions) => {
-			let colorPosition
-
-			if (positions.myColor === 'w' && positions.turn === 'b') {
-				colorPosition = newPosition.slice().reverse()
-			} else if (positions.myColor === 'b' && positions.turn === 'b') {
-				colorPosition = newPosition
-			} else if (positions.myColor === 'w' && positions.turn === 'w') {
-				colorPosition = newPosition
-			} else if (positions.myColor === 'b' && positions.turn === 'w') {
-				colorPosition = newPosition.slice().reverse()
-			}
-
-			console.log(positions.myColor, positions.turn)
-
-			return {
-				currentPosition: [...positions.currentPosition, colorPosition!],
-				turn: positions.turn === 'w' ? 'b' : 'w'
-			}
-		}),
-	myColor: null,
-	setMyColor: (color) =>
-		set(() => ({
-			myColor: color,
-			currentPosition: [initialPosition(color)]
-		})),
+	currentPosition: GAME_INIT.currentPosition,
+	noteMoves: GAME_INIT.noteMoves,
+	setNoteMoves: (moves) => set((state) => ({ noteMoves: [...state.noteMoves, moves] })),
 	setNewCurrentPosition: (newPosition) =>
 		set((positions) => {
-			const updatedPositions = [...positions.currentPosition, newPosition]
-
-			const { websocket } = useWebsocket.getState()
-
-			// Если websocket существует и открыт, отправляем сообщение
-			if (websocket && websocket.readyState === WebSocket.OPEN) {
-				websocket.send(JSON.stringify({ position: updatedPositions, type: 'move' }))
-			}
+			const updatedPositions = [
+				...positions.currentPosition,
+				newPosition
+					.slice()
+					.reverse()
+					.map((row) => row.slice().reverse())
+			]
 
 			return {
 				currentPosition: updatedPositions,
 				turn: positions.turn === 'w' ? 'b' : 'w'
 			}
-			// currentPosition: [...positions.currentPosition, newPosition],
-			// turn: positions.turn === 'w' ? 'b' : 'w'
 		}),
-	turn: 'w',
+	turn: GAME_INIT.turn,
 	setNewGame: () =>
 		set({
-			// currentPosition: [initialPosition()],
+			currentPosition: [initialPosition('w')],
 			turn: 'w',
 			status: STATUS_GAME.is_coming,
 			castleDirection: {
@@ -79,12 +60,9 @@ export const useGame = create<Game>((set) => ({
 				b: 'both'
 			}
 		}),
-	candidatesMoves: [],
+	candidatesMoves: GAME_INIT.candidatesMoves,
 	setCandidatesMoves: (moves) => set({ candidatesMoves: moves }),
-	castleDirection: {
-		w: 'both',
-		b: 'both'
-	},
+	castleDirection: GAME_INIT.castleDirection,
 	setCastleDirection: (color: 'b' | 'w', direction: 'both' | 'left' | 'none' | 'right') =>
 		set((state) => ({
 			castleDirection: {
@@ -92,6 +70,6 @@ export const useGame = create<Game>((set) => ({
 				[color]: direction
 			}
 		})),
-	status: STATUS_GAME.is_coming,
+	status: GAME_INIT.status,
 	setStatus: (status) => set({ status })
 }))
