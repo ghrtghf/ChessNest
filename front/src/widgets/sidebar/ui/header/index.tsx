@@ -9,8 +9,9 @@ import { SidebarTrigger } from '@/shared/ui/sidebar'
 const TITLE_MAP: Record<string, string> = {
 	[PAGES.home]: 'Главная',
 	[PAGES.stats]: 'Статистика',
-	[PAGES.settings]: 'Настройки',
-	[PAGES.search]: 'Найти друга'
+	[PAGES.settings]: 'Настройки доски',
+	[PAGES.search]: 'Найти друга',
+	[PAGES.profile]: 'Профиль'
 }
 
 export const SiteHeader = () => {
