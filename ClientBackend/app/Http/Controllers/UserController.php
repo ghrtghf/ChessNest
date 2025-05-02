@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Services\UserService;
 use App\Traits\ApiResponse;
+use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {
@@ -27,6 +29,13 @@ class UserController extends Controller
     public function show($nickname)
     {
         $response = $this->service->find($nickname);
+
+        return $this->success(['users' => $response], 201);
+    }
+
+    public function find(Request $request)
+    {
+        $response = $this->service->findByName($request->nickname);
 
         return $this->success(['users' => $response], 201);
     }

@@ -32,6 +32,7 @@ Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/find', [UserController::class, 'find']);
     Route::get('/users/{nickname}', [UserController::class, 'show']);
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{nickname}', [UserController::class, 'update']);

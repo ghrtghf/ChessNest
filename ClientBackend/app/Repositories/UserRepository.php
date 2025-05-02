@@ -22,4 +22,12 @@ class UserRepository extends BaseRepository
     {
         return $this->model->where('email', $email)->first();
     }
+
+    public function findByName($nickname)
+    {
+        return $this->model->where('username', 'LIKE', '%' . $nickname . '%')
+            ->orderBy('username')
+            ->limit(10)
+            ->get(['username', 'avatar']);
+    }
 }

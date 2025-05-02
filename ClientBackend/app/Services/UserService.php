@@ -12,4 +12,13 @@ class UserService extends BaseService
     {
         $this->repo = $userRepository;
     }
+
+    public function findByName($nickname)
+    {
+        if (empty($nickname)) {
+            return collect();
+        }
+
+        return $this->repo->findByName($nickname);
+    }
 }
