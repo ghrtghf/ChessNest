@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -29,7 +28,7 @@ type Client struct {
 type GameState struct {
 	FEN     string           `json:"fen"`
 	History []*chess.Move    `json:"history"`
-	Status  chess.GameStatus `json:"status"`
+	Status  chess.Outcome `json:"status"`
 	Turn    chess.Color     `json:"turn"`
 }
 
@@ -48,9 +47,9 @@ var upgrader = websocket.Upgrader{
 
 func initRedis() {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // или ваш адрес Redis
-		Password: "",               // пароль, если есть
-		DB:       0,               // номер базы данных
+		Addr:     "localhost:6379",
+		Password: "password",      
+		DB:       0,               
 	})
 
 	// Проверка подключения
