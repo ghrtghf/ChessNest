@@ -53,4 +53,11 @@ class UserController extends Controller
 
         return $this->success(['users' => $response], 204);
     }
+
+    public function addFriend($nickname)
+    {
+        $response = $this->service->addFriend($nickname);
+
+        return $this->success(['users' => $response], 201);
+    }
 }
