@@ -23,7 +23,7 @@ const boardSetup = [
 	['wn', 'wk', 'wr']
 ]
 
-export default function SettingsPage() {
+export default function Board() {
 	const selectedTheme = useSelectTheme((stateGame) => stateGame.selectedTheme)
 	const setSelectedTheme = useSelectTheme((stateGame) => stateGame.setSelectedTheme)
 
@@ -37,6 +37,8 @@ export default function SettingsPage() {
 			setSelectedBoard(preset.id)
 		}
 	}
+
+	console.log(selectedTheme, selectedPieces)
 
 	const onSelectPresetPieces = (presetId: TypeThemeBoard) => {
 		const preset = PRESETS.find((p) => p.id === presetId)

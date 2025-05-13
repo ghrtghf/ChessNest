@@ -28,6 +28,7 @@ export default function LayoutSetting({ children }: { children: ReactNode }) {
 							<Button
 								key={item.url}
 								variant={active ? 'secondary' : 'ghost'}
+								asChild
 								className={cn(
 									'h-14',
 									active ? 'border-r-4 border-black' : '',

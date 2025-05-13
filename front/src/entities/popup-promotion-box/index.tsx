@@ -2,14 +2,14 @@
 import type { CSSProperties } from 'react'
 import { X } from 'lucide-react'
 
+import { PRESETS } from '@/shared/constants'
 import { STATUS_GAME } from '@/shared/constants/status'
 import { copyPosition } from '@/shared/helpers'
+import { getNewMoveNotation } from '@/shared/helpers/change-position/notation'
 import { useGame, usePopup, useSelectTheme } from '@/shared/store'
+import { cn } from '@/shared/utils'
 
 import './popup.css'
-
-import { PRESETS } from '@/shared/constants'
-import { cn } from '@/shared/utils'
 
 const getPromotionBoxPosition = (promotionSquare: {
 	x: number
@@ -48,10 +48,11 @@ const getPromotionBoxPosition = (promotionSquare: {
 }
 
 export const PromotionBox = () => {
-	const statusGame = useGame((state) => state.status)
 	const setStatus = useGame((state) => state.setStatus)
 	const setCandidatesMoves = useGame((state) => state.setCandidatesMoves)
 	const setNewCurrentPosition = useGame((state) => state.setNewCurrentPosition)
+	const setNoteMoves = useGame((state) => state.setNoteMoves)
+	const statusGame = useGame((state) => state.status)
 	const currentPosition = useGame((state) => state.currentPosition)
 
 	const promotionSquare = usePopup((state) => state.promotingSquare)
@@ -72,6 +73,16 @@ export const PromotionBox = () => {
 		newPosition[promotionSquare.x][promotionSquare.y] = `${color}${optionPiece}`
 
 		setCandidatesMoves([])
+
+		const newMove = getNewMoveNotation({
+			...promotionSquare,
+			letter: promotionSquare.currentPositionY,
+			number: promotionSquare.currentPositionX,
+			piece: `${color}p`,
+			promotesTo: optionPiece,
+			position: newPosition
+		})
+		setNoteMoves(newMove)
 		setNewCurrentPosition(newPosition)
 		setStatus(STATUS_GAME.is_coming)
 	}

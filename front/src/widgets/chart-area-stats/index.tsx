@@ -146,6 +146,8 @@ export const ChartAreaStats = () => {
 		return date >= startDate
 	})
 
+	var hello = 0
+
 	return (
 		<Card className='@container/card'>
 			<CardHeader className='relative'>

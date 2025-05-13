@@ -6,11 +6,12 @@ interface Notation {
 	number: number
 	piece: string | undefined
 	position: string[][]
+	promotesTo?: string
 	x: number
 	y: number
 }
 
-export const getNewMoveNotation = ({ piece, letter, number, x, y, position }: Notation) => {
+export const getNewMoveNotation = ({ piece, letter, number, x, y, position, promotesTo }: Notation) => {
 	const flipped = piece?.startsWith('b')
 
 	const fileIndex = flipped ? 7 - y : y
@@ -39,7 +40,7 @@ export const getNewMoveNotation = ({ piece, letter, number, x, y, position }: No
 	// note += getCharacter(y + 1) + (x + 1)
 	note += fileChar + rankIndex
 
-	// if (promotesTo) note += `=${promotesTo.toUpperCase()}`
+	if (promotesTo) note += `=${promotesTo.toUpperCase()}`
 
 	return note
 }
