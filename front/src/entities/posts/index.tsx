@@ -33,7 +33,7 @@ export function Posts() {
 					</div>
 				))}
 			{!posts.isLoading &&
-				posts.data.map((post: any) => (
+				posts.data.data?.posts.map((post: any) => (
 					<div key={post.id} className='flex flex-col space-y-3 py-3'>
 						<Image src={post.image_url} alt={post.title} width={100} height={56} style={{ width: '100%' }} />
 						<div className='space-y-2'>
