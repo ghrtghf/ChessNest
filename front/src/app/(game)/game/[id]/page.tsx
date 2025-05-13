@@ -28,7 +28,7 @@ export default function Game() {
 						<AvatarFallback className='rounded'>CN</AvatarFallback>
 					</Avatar>
 					<div className='grid flex-1 text-left text-sm leading-tight'>
-						<span className='truncate font-medium'>Afpia</span>
+						<span className='truncate font-medium'>Филиппок</span>
 					</div>
 				</div>
 				<Board />
