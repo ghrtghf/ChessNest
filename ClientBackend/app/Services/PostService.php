@@ -23,7 +23,7 @@ class PostService extends BaseService
 
             unset($input['image']);
         }
-
+        $input['view'] = 0;
         return $this->repo->create($input);
     }
 }

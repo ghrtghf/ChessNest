@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\MatchmakingController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/posts', [PostController::class, 'index']);
+Route::post('/posts', [PostController::class, 'store']);
+
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
 
@@ -47,5 +51,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications', [NotificationController::class, 'store']);
 
-    Route::get('/posts', [PostController::class, 'index']);
+
 });

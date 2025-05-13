@@ -21,14 +21,14 @@ class PostController extends Controller
     {
         $response = $this->service->all();
 
-        return $this->success(['users' => $response], 201);
+        return $this->success($response, 201);
     }
 
     public function show($id)
     {
         $post = $this->service->find($id);
 
-        return $this->success($post, 201);
+        return $this->success(['posts' => $post], 201);
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|image|max:2048',
+            'image' => 'max:2048',
         ]);
 
         $post = $this->service->create($validated);
