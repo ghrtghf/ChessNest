@@ -93,7 +93,7 @@ const chartConfig = {
 		label: 'Рейтинг'
 	},
 	my_own: {
-		label: 'Afpia',
+		label: 'Филиппок',
 		color: 'hsl(var(--chart-1))'
 	}
 	// mobile: {

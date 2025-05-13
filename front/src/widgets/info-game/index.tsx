@@ -1,21 +1,23 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { DoorOpen, Flag, Plus } from 'lucide-react';
-import Link from 'next/link';
+import { useState } from 'react'
+import { DoorOpen, Flag, Plus } from 'lucide-react'
+import Link from 'next/link'
 
-
-
-import { PAGES } from '@/shared/constants';
-import { useGame } from '@/shared/store';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/shared/ui/alert-dialog';
-import { Button } from '@/shared/ui/button';
-import { Table, TableBody, TableCell, TableRow } from '@/shared/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip';
-
-
-
-
+import { PAGES } from '@/shared/constants'
+import { useGame } from '@/shared/store'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle
+} from '@/shared/ui/alert-dialog'
+import { Button } from '@/shared/ui/button'
+import { Table, TableBody, TableCell, TableRow } from '@/shared/ui/table'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 
 type AlertType = 'draw' | 'surrender' | null
 
