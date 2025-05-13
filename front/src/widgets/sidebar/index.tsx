@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { BarChartIcon, LayoutDashboardIcon, SearchIcon, SettingsIcon } from 'lucide-react'
+import { BarChartIcon, LayoutDashboardIcon, Pen, SearchIcon, SettingsIcon, StickyNote } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -30,6 +30,11 @@ const data = {
 			title: 'Статистика',
 			url: PAGES.stats,
 			icon: BarChartIcon
+		},
+		{
+			title: 'Шахматные статьи',
+			url: PAGES.posts,
+			icon: StickyNote
 		}
 	],
 	navSecondary: [
@@ -42,35 +47,35 @@ const data = {
 			title: 'Найти друга',
 			url: PAGES.search,
 			icon: SearchIcon
+		},
+		{
+			title: 'Создание статьи',
+			url: PAGES.createPost,
+			icon: Pen
 		}
 	]
 }
 
-export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-	const path = usePathname()
-
-	console.log(path)
-	return (
-		<Sidebar collapsible='offcanvas' {...props}>
-			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton className='data-[slot=sidebar-menu-button]:!p-1.5' asChild>
-							<Link href={PAGES.home}>
-								<Logo />
-								<span className='text-base font-semibold'>Knight.com</span>
-							</Link>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarHeader>
-			<SidebarContent>
-				<NavMain items={data.navMain} />
-				<NavSecondary className='mt-auto' items={data.navSecondary} />
-			</SidebarContent>
-			<SidebarFooter>
-				<NavUser />
-			</SidebarFooter>
-		</Sidebar>
-	)
-}
+export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
+	<Sidebar collapsible='offcanvas' {...props}>
+		<SidebarHeader>
+			<SidebarMenu>
+				<SidebarMenuItem>
+					<SidebarMenuButton className='data-[slot=sidebar-menu-button]:!p-1.5' asChild>
+						<Link href={PAGES.home}>
+							<Logo />
+							<span className='text-base font-semibold'>Knight.com</span>
+						</Link>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			</SidebarMenu>
+		</SidebarHeader>
+		<SidebarContent>
+			<NavMain items={data.navMain} />
+			<NavSecondary className='mt-auto' items={data.navSecondary} />
+		</SidebarContent>
+		<SidebarFooter>
+			<NavUser />
+		</SidebarFooter>
+	</Sidebar>
+)
