@@ -15,7 +15,6 @@ export function useSignupMutation() {
 		mutationKey: ['signup user'],
 		mutationFn: async ({ values }: { values: TypeSignupSchema }) => {
 			const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
-			const response = await axios(`http://localhost:8000/api/register`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
