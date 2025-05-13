@@ -11,7 +11,9 @@ const TITLE_MAP: Record<string, string> = {
 	[PAGES.stats]: 'Статистика',
 	[PAGES.settings]: 'Настройки доски',
 	[PAGES.search]: 'Найти друга',
-	[PAGES.profile]: 'Профиль'
+	[PAGES.profile]: 'Профиль',
+	[PAGES.posts]: 'Шахматные статьи',
+	[PAGES.createPost]: 'Создание шахматной статьи'
 }
 
 export const SiteHeader = () => {

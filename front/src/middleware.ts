@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import { NextResponse, type NextRequest } from 'next/server'
 
 export default function middleware(request: NextRequest) {
