@@ -19,7 +19,7 @@ export function useLoginMutation() {
 			return response.data
 		},
 		onSuccess(data) {
-			if (data.message) {
+			if (data?.message) {
 				toastMessageHandler(data)
 			} else {
 				router.push('/home')
@@ -35,7 +35,9 @@ export function useLoginMutation() {
 			}
 		},
 		onError(error: Error) {
-			toastMessageHandler(error)
+			console.log(error)
+			// toastMessageHandler(error.response.data.message)
+			toast.message(error.response.data.message)
 		}
 	})
 

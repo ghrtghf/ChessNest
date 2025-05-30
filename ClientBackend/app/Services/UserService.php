@@ -21,4 +21,9 @@ class UserService extends BaseService
 
         return $this->repo->findByName($nickname);
     }
+
+    public function stats($period)
+    {
+
+    }
 }

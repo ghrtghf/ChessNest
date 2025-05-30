@@ -21,7 +21,7 @@ class PostController extends Controller
     {
         $response = $this->service->all();
 
-        return $this->success($response, 201);
+        return $this->success(['posts' => $response], 201);
     }
 
     public function show($id)

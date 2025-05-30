@@ -35,7 +35,9 @@ export function useSignupMutation() {
 			}
 		},
 		onError(error: Error) {
-			toastMessageHandler(error)
+			console.log(error)
+			// toastMessageHandler(error.response.data.message)
+			toast.message(error.response.data.message)
 		}
 	})
 

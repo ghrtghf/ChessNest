@@ -85,7 +85,7 @@ const chartData = [
 	{ date: '2025-05-11', my_own: 0 },
 	{ date: '2025-05-12', my_own: 0 },
 	{ date: '2025-05-13', my_own: 0 },
-	{ date: '2025-05-14', my_own: 1000 }
+	{ date: '2025-05-14', my_own: 1200 }
 ]
 
 const chartConfig = {
@@ -93,7 +93,7 @@ const chartConfig = {
 		label: 'Рейтинг'
 	},
 	my_own: {
-		label: 'Филиппок',
+		label: 'Игрок',
 		color: 'hsl(var(--chart-1))'
 	}
 	// mobile: {

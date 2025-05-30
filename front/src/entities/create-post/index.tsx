@@ -64,7 +64,7 @@ export function CreatePostForm() {
 								<FormItem>
 									<FormLabel>Название</FormLabel>
 									<FormControl>
-										<Input placeholder='Йога' disabled={createPost.isLoading} type='text' {...field} />
+										<Input placeholder='Дебют...' disabled={createPost.isLoading} type='text' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -109,7 +109,7 @@ export function CreatePostForm() {
 							)}
 						/>
 						<Button className='w-full' variant='outline'>
-							Создать статьи
+							Создать статью
 						</Button>
 					</form>
 				</Form>

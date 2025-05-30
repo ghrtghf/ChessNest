@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { api } from '@/shared/api'
 import { toastMessageHandler } from '@/shared/utils'
+import { toast } from 'sonner'
 
 export function usePosts() {
 	const posts = useQuery({
@@ -11,7 +12,9 @@ export function usePosts() {
 			return response.data
 		},
 		onError(error: Error) {
-			toastMessageHandler(error)
+			console.log(error)
+			// toastMessageHandler(error.response.data.message)
+			toast.message(error.response.data.message)
 		}
 	})
 

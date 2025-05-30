@@ -14,7 +14,7 @@ class ValidUsername implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! preg_match('/^[a-zA-Z0-9_]+$/', $value)) {
+        if (!preg_match('/^[a-zа-яА-ЯA-Z0-9_]+$/', $value)) {
             $fail('Поле :attribute может содержать только буквы, цифры и подчеркивания.');
         }
     }

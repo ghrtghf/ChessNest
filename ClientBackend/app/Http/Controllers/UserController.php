@@ -54,6 +54,13 @@ class UserController extends Controller
         return $this->success(['users' => $response], 204);
     }
 
+    public function stats(Request $request)
+    {
+        $response = $this->service->stats($request->period);
+
+        return $this->success($response, 201);
+    }
+
     public function addFriend($nickname)
     {
         $response = $this->service->addFriend($nickname);

@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/posts', [PostController::class, 'index']);
-Route::post('/posts', [PostController::class, 'store']);
+Route::post('/post', [PostController::class, 'store']);
 
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'store'])->middleware('guest');

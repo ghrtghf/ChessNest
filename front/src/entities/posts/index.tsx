@@ -35,7 +35,7 @@ export function Posts() {
 			{!posts.isLoading &&
 				posts.data.data?.posts.map((post: any) => (
 					<div key={post.id} className='flex flex-col space-y-3 py-3'>
-						<Image src={post.image_url} alt={post.title} width={100} height={56} style={{ width: '100%' }} />
+						<Image src={post.image_url ?? null} alt={post.title} width={100} height={56} style={{ width: '100%' }} />
 						<div className='space-y-2'>
 							<h2 className='h-6 w-[400px] overflow-hidden text-ellipsis whitespace-nowrap'>{post.title}</h2>
 							<p className='h-[70px] w-[350px] overflow-hidden text-ellipsis'>{post.description}</p>
@@ -52,7 +52,7 @@ export function Posts() {
 										<DialogTitle>Кол-во просмотров: {post.view}</DialogTitle>
 									</DialogHeader>
 									<div className='flex flex-col items-center space-x-2'>
-										<Image src={'/'} alt={post.title} width={100} height={56} style={{ width: '100%' }} />
+										<Image src={post.image_url ?? null} alt={post.title} width={100} height={56} style={{ width: '100%' }} />
 										{post.description}
 									</div>
 									<DialogFooter className='sm:justify-end'>

@@ -15,9 +15,14 @@ class PostRepository extends BaseRepository
 
     public function all()
     {
-        return $this->model
-            ->orderBy('view')
+        $posts = $this->model
+            ->orderBy('view', 'desc')
             ->get();
+        $postIds = $posts->pluck('id')->toArray();
+
+        Post::whereIn('id', $postIds)->increment('view');
+
+        return $posts;
     }
 
 }
