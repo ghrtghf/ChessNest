@@ -16,21 +16,40 @@ import {
 	AlertDialogTitle
 } from '@/shared/ui/alert-dialog'
 import { Button } from '@/shared/ui/button'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle
+} from '@/shared/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/shared/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 
-type AlertType = 'draw' | 'surrender' | null
+type AlertType = 'surrender' | null
 
 export const InfoGame = () => {
 	const [alertType, setAlertType] = useState<AlertType>(null)
 
 	const status = useGame((state) => state.status)
 	const setNewGame = useGame((state) => state.setNewGame)
+	const turn = useGame((state) => state.turn)
 
 	const noteMoves = useGame((state) => state.noteMoves)
 
 	const newGame = () => {
 		setNewGame()
+	}
+
+	const surrenderClick = () => {
+		setAlertType(null)
+		if (turn === 'w') {
+			useGame.setState({ status: 'black_wins' })
+		} else if (turn === 'b') {
+			useGame.setState({ status: 'white_wins' })
+		}
 	}
 
 	return (
@@ -48,7 +67,6 @@ export const InfoGame = () => {
 
 									return (
 										<TableRow key={idx}>
-											{/* eslint-disable-next-line style/jsx-one-expression-per-line */}
 											<TableCell className='text-left w-[50px]'>{moveNum}.</TableCell>
 											<TableCell className='w-[50px]'>{whiteMove}</TableCell>
 											<TableCell className='w-[50px]'>{blackMove}</TableCell>
@@ -60,26 +78,26 @@ export const InfoGame = () => {
 					</div>
 				</div>
 
-				<div className='flex gap-2'>
+				<div className='flex gap-2 w-full'>
 					<TooltipProvider>
 						{status !== 'white_wins' && status !== 'black_wins' && (
 							<>
 								<Tooltip>
 									<TooltipTrigger asChild>
-										<Button className='w-20 h-10' onClick={() => setAlertType('surrender')}>
+										<Button className='w-full h-10' onClick={() => setAlertType('surrender')}>
 											<Flag />
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>Сдаться</TooltipContent>
 								</Tooltip>
-								<Tooltip>
+								{/* <Tooltip>
 									<TooltipTrigger asChild>
 										<Button className='w-20 h-10' onClick={() => setAlertType('draw')}>
 											1/2
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>Предложить ничью</TooltipContent>
-								</Tooltip>
+								</Tooltip> */}
 							</>
 						)}
 						{(status === 'black_wins' || status === 'white_wins') && (
@@ -95,7 +113,7 @@ export const InfoGame = () => {
 						)}
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button className='w-20 h-10' asChild>
+								<Button className='w-full h-10' asChild>
 									<Link href={PAGES.home}>
 										<DoorOpen />
 									</Link>
@@ -106,18 +124,26 @@ export const InfoGame = () => {
 					</TooltipProvider>
 				</div>
 			</div>
-			<AlertDialog onOpenChange={(open) => !open && setAlertType(null)} open={alertType === 'surrender'}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle className='text-center'>Ты точно хочешь сдаться?</AlertDialogTitle>
-					</AlertDialogHeader>
-					<AlertDialogFooter className='flex justify-center sm:justify-center'>
-						<AlertDialogCancel className='w-[200px] h-[50px]'>Нет</AlertDialogCancel>
-						<AlertDialogAction className='w-[200px] h-[50px]'>Да</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-			<AlertDialog onOpenChange={(open) => !open && setAlertType(null)} open={alertType === 'draw'}>
+			<Dialog onOpenChange={() => setAlertType(null)} open={alertType === 'surrender'}>
+				<DialogContent className='sm:max-w-md'>
+					<DialogHeader>
+						<DialogTitle>Ты точно хочешь сдаться?</DialogTitle>
+					</DialogHeader>
+					<DialogFooter className='sm:justify-center'>
+						<DialogClose asChild>
+							<Button className='w-[200px] h-[50px]' type='button' variant='outline'>
+								Отмена
+							</Button>
+						</DialogClose>
+						<DialogClose asChild>
+							<Button className='w-[200px] h-[50px]' type='button' variant='default' onClick={surrenderClick}>
+								Новая игра
+							</Button>
+						</DialogClose>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+			{/* <AlertDialog onOpenChange={(open) => !open && setAlertType(null)} open={alertType === 'draw'}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle className='text-center'>Предложить ничью?</AlertDialogTitle>
@@ -127,7 +153,7 @@ export const InfoGame = () => {
 						<AlertDialogAction className='w-[200px] h-[50px]'>Предложить</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
-			</AlertDialog>
+			</AlertDialog> */}
 		</>
 	)
 }

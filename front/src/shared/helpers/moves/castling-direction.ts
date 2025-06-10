@@ -19,4 +19,14 @@ export const getCastlingDirections = ({ castleDirection, piece, letter, number }
 		if (castleDirection === 'both') return 'left'
 		if (castleDirection === 'right') return 'none'
 	}
+	// if ((number === 0 || number === 7) && letter === 0) {
+	// 	if (castleDirection === 'both') return 'right'
+	// 	if (castleDirection === 'left') return 'none'
+	// 	if (castleDirection === 'right') return 'right'
+	// }
+	// if ((number === 0 || number === 7) && letter === 7) {
+	// 	if (castleDirection === 'both') return 'left'
+	// 	if (castleDirection === 'right') return 'none'
+	// 	if (castleDirection === 'left') return 'left'
+	// }
 }

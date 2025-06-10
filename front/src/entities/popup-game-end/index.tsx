@@ -38,8 +38,8 @@ export const GameEnd = () => {
 	if (statusGame === STATUS_GAME.promoting || statusGame === STATUS_GAME.is_coming) return null
 
 	const newGame = () => {
-		setNewGame()
 		setOpen(false)
+		setNewGame()
 	}
 
 	return (

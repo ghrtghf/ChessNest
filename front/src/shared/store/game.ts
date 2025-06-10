@@ -58,7 +58,8 @@ export const useGame = create<Game>((set) => ({
 			castleDirection: {
 				w: 'both',
 				b: 'both'
-			}
+			},
+			noteMoves: []
 		}),
 	candidatesMoves: GAME_INIT.candidatesMoves,
 	setCandidatesMoves: (moves) => set({ candidatesMoves: moves }),

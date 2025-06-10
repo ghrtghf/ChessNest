@@ -12,8 +12,6 @@ export const Pieces = () => {
 	const attackingMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] !== '')
 	const hintMoves = candidatesMoves.filter(([y, x]) => currentPosition[y][x] === '')
 
-	// console.log('@currentPosition', currentPosition)
-
 	return (
 		<>
 			{attackingMoves &&

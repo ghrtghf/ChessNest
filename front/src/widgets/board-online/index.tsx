@@ -5,11 +5,11 @@ import { useLayoutEffect, useRef } from 'react'
 import { Letters, Numbers } from '@/entities/coordinates'
 import { GridTiles } from '@/entities/grid-tiles'
 import { Pieces } from '@/entities/pieces'
-import { Popup } from '@/entities/popup'
 import { GameEnd } from '@/entities/popup-game-end'
 import { changePosition, letters, numbers } from '@/shared/helpers'
 import { useHighlightPiece, usePiece } from '@/shared/store'
 import { useCustomBoard } from '@/shared/store/custom-board'
+import { PromotionBox } from '@/entities/popup-promotion-box'
 
 export const Board = () => {
 	const highlightPiece = useHighlightPiece((state) => state.highlightPiece)
@@ -103,7 +103,7 @@ export const Board = () => {
 			<Numbers numbers={numbers} />
 			<Letters letters={letters} />
 			<Pieces />
-			<Popup />
+			<PromotionBox />
 			<GameEnd />
 		</div>
 	)

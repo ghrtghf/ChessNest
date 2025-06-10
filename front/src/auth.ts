@@ -1,8 +1,5 @@
 import NextAuth from 'next-auth'
 import Google from 'next-auth/providers/google'
-import { toast } from 'sonner'
-
-// import { toast } from 'sonner'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [Google],
@@ -33,11 +30,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		async session({ session }) {
 			return session
 		}
-		// async redirect({ url, baseUrl }) {
-		// 	// console.log(url, baseUrl)
-		// 	// toast.success('Успешная авторизация')
-		// 	return baseUrl
-		// }
 	},
 	cookies: {
 		sessionToken: {
